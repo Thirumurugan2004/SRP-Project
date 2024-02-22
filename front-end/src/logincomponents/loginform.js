@@ -21,7 +21,13 @@ const Login = () => {
       });
 
       if (response.ok) {
-        window.location.href = '/success'; // Redirect to success page if authentication is successful
+        if (role === 'student') {
+          window.location.href = `/student`; // Redirect to student page
+        } else if (role === 'teacher') {
+          window.location.href = `/teacher`; // Redirect to teacher page
+        } else if (role === 'hod') {
+          window.location.href = `/hod`; // Redirect to HOD page
+        }
       } else {
         alert('wrong username or password')
         window.location.href = '/'; // Redirect to login page if authentication is not successful
