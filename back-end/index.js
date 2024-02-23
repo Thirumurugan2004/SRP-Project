@@ -1,17 +1,28 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
 const mysql = require('mysql');
 const cors = require('cors');
+const cookieParser = require("cookie-parser");
 const app = express();
 const port = 5000;
-
-// Create a MySQL connection
-const db = mysql.createConnection({
+const store=new session.MemoryStore();
+app.use(cookieParser());
+// MySQL database configuration
+const dbConfig = {
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'ist_dept'
+  database: 'ist_dept' // Update with your database name
+};
+
+// Create a MySQL connection
+const db = mysql.createConnection({
+  host: dbConfig.host,
+  user: dbConfig.user,
+  password: dbConfig.password,
+  database: dbConfig.database
 });
 
 // Connect to MySQL
@@ -19,6 +30,9 @@ db.connect((err) => {
   if (err) throw err;
   console.log('Connected to MySQL database');
 });
+
+// Session store configuration
+
 
 // Body parser middleware
 app.use(bodyParser.json());
@@ -29,9 +43,10 @@ app.use(cors({
 
 // Session middleware
 app.use(session({
-  secret: 'your-secret-key',
-  resave: false,
-  saveUninitialized: true
+  secret: 'temp',
+  resave: true, 
+  saveUninitialized: true,
+  store
 }));
 
 // Route for user authentication and session creation
@@ -48,8 +63,12 @@ app.post('/login', (req, res) => {
     }
 
     if (result.length > 0) {
+      // Set session data upon successful login
       req.session.username = username;
-      console.log('Session created');
+      req.session.isAuthenticated = true;
+      req.session.save();
+      console.log(store);
+      // Insert or update session information in the sessions table
       res.send('Success');
     } else {
       res.status(401).send('Wrong credentials');
@@ -59,37 +78,36 @@ app.post('/login', (req, res) => {
 
 // Route for retrieving session information
 app.get('/session', (req, res) => {
-  const username = req.session.username || 'no username'; 
-  res.json({ username });
+  const username = req.session.username || 'no username';
+  const isAuthenticated = req.session.isAuthenticated ||false;
+  // Retrieve session information directly from the sessions table
+ 
+    console.log('Retrieved Username:', username);
+    res.json({ username, isAuthenticated });
+  
 });
 
 // Logout route to destroy session
 app.get('/logout', (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      console.error(err);
+  const username = req.session.username;
+
+  // Delete session information from the sessions table upon logout
+  const deleteSql = 'DELETE FROM sessions WHERE username = ?';
+  db.query(deleteSql, [username], (error) => {
+    if (error) {
+      console.error('Error deleting session data:', error);
       return res.status(500).send('Internal Server Error');
     }
-    console.log('Session destroyed');
-    res.redirect('/');
-  });
-});
 
-// Middleware to handle session and CORS for the '/' route
-app.use('/', (req, res, next) => {
-  if (req.session.username) {
     req.session.destroy((err) => {
       if (err) {
         console.error(err);
         return res.status(500).send('Internal Server Error');
       }
       console.log('Session destroyed');
-      next();
+      res.redirect('/');
     });
-  } else {
-    console.log('Session not found');
-    next();
-  }
+  });
 });
 
 // Start server

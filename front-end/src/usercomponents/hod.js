@@ -9,6 +9,7 @@ function Hod() {
         axios.get('http://localhost:5000/session', { withCredentials: true }) // Ensure cookies are sent with the request
             .then(response => {
                 const data = response.data;
+                console.log(data);
                 if (data.username) {
                     setUsername(data.username);
                     console.log('username set');
