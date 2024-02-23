@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Card, Form, Button } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios'; // Import Axios
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -10,17 +11,13 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Send username, password, and role to backend for authentication
+    // Send username, password, and role to backend for authentication using Axios
     try {
-      const response = await fetch('http://localhost:5000/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username, password, role })
+      const response = await axios.get('http://localhost:5000/login', {
+        params: { username, password, role }
       });
 
-      if (response.ok) {
+      if (response.status === 200) {
         if (role === 'student') {
           window.location.href = `/student`; // Redirect to student page
         } else if (role === 'teacher') {

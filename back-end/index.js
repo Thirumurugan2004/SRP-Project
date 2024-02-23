@@ -50,10 +50,12 @@ app.use(session({
 }));
 
 // Route for user authentication and session creation
-app.post('/login', (req, res) => {
-  const { username, password } = req.body;
-  const role = req.body.role.toLowerCase();
-
+app.get('/login', (req, res) => {
+  const { username, password,role } = req.query;
+console.log('login request');
+console.log(username);
+console.log(password);
+console.log(role);
   const sql = `SELECT * FROM users WHERE username = ? AND password = ? AND role = ?`;
 
   db.query(sql, [username, password, role], (err, result) => {
@@ -90,24 +92,15 @@ app.get('/session', (req, res) => {
 // Logout route to destroy session
 app.get('/logout', (req, res) => {
   const username = req.session.username;
-
-  // Delete session information from the sessions table upon logout
-  const deleteSql = 'DELETE FROM sessions WHERE username = ?';
-  db.query(deleteSql, [username], (error) => {
-    if (error) {
-      console.error('Error deleting session data:', error);
-      return res.status(500).send('Internal Server Error');
-    }
-
     req.session.destroy((err) => {
       if (err) {
         console.error(err);
         return res.status(500).send('Internal Server Error');
       }
       console.log('Session destroyed');
-      res.redirect('/');
+      res.send('success');
     });
-  });
+
 });
 
 // Start server
