@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Container, Card, Form, Button } from 'react-bootstrap';
+import { Container, Card, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from 'axios'; // Import Axios
+import axios from 'axios'; // Import Axios library
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -13,8 +13,10 @@ const Login = () => {
 
     // Send username, password, and role to backend for authentication using Axios
     try {
-      const response = await axios.get('http://localhost:5000/login', {
-        params: { username, password, role }
+      const response = await axios.post('http://localhost:5000/login', {
+        username,
+        password,
+        role
       });
 
       if (response.status === 200) {
@@ -26,7 +28,7 @@ const Login = () => {
           window.location.href = `/hod`; // Redirect to HOD page
         }
       } else {
-        alert('wrong username or password')
+        alert('wrong username or password');
         window.location.href = '/'; // Redirect to login page if authentication is not successful
       }
     } catch (error) {
@@ -38,38 +40,44 @@ const Login = () => {
     <Container className="d-flex justify-content-center align-items-center vh-100">
       <Card className="p-4 border" style={{ minWidth: '300px', maxWidth: '400px' }}>
         <Card.Title className="text-center mb-4">Login</Card.Title>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3">
-            <Form.Label>Username:</Form.Label>
-            <Form.Control
+        <div>
+          <div className="mb-3">
+            <label htmlFor="username" className="form-label">Username:</label>
+            <input
               type="text"
+              id="username"
+              className="form-control"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Password:</Form.Label>
-            <Form.Control
+          </div>
+          <div className="mb-3">
+            <label htmlFor="password" className="form-label">Password:</label>
+            <input
               type="password"
+              id="password"
+              className="form-control"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Role:</Form.Label>
-            <Form.Select
+          </div>
+          <div className="mb-3">
+            <label htmlFor="role" className="form-label">Role:</label>
+            <select
+              id="role"
+              className="form-select"
               value={role}
               onChange={(e) => setRole(e.target.value)}
             >
               <option value="student">Student</option>
               <option value="teacher">Teacher</option>
               <option value="hod">HOD</option>
-            </Form.Select>
-          </Form.Group>
-          <div className="text-center">
-            <Button type="submit" variant="primary">Login</Button>
+            </select>
           </div>
-        </Form>
+          <div className="text-center">
+            <Button type="button" variant="primary" onClick={handleSubmit}>Login</Button>
+          </div>
+        </div>
       </Card>
     </Container>
   );

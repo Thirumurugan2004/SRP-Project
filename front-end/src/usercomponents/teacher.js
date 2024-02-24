@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Import Axios library
-function Teacher(){
+
+function Teacher() {
     const [username, setUsername] = useState('');
 
     useEffect(() => {
-        // Fetch username from session using Axios
-        axios.get('http://localhost:5000/session', { withCredentials: true }) // Ensure cookies are sent with the request
-            .then(response => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/session', {
+                    withCredentials: true // Ensure cookies are sent with the request
+                });
                 const data = response.data;
                 console.log(data);
                 if (data.username) {
@@ -15,11 +18,13 @@ function Teacher(){
                 } else {
                     setUsername('No username found');
                 }
-            })
-            .catch(error => {
+            } catch (error) {
                 console.log('Error:', error);
                 setUsername('Error fetching username');
-            });
+            }
+        };
+
+        fetchData();
     }, []);
 
     return (
@@ -29,4 +34,5 @@ function Teacher(){
         </>
     );
 }
+
 export default Teacher;

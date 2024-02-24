@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; // Import Axios library
-function Student(){
+
+function Student() {
     const [username, setUsername] = useState('');
 
     useEffect(() => {
-        // Fetch username from session using Axios
-        axios.get('http://localhost:5000/session', { withCredentials: true }) // Ensure cookies are sent with the request
-            .then(response => {
-                const data = response.data;
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://localhost:5000/session', {
+                    method: 'GET',
+                    credentials: 'include' // Ensure cookies are sent with the request
+                });
+                const data = await response.json();
                 console.log(data);
                 if (data.username) {
                     setUsername(data.username);
@@ -15,11 +18,13 @@ function Student(){
                 } else {
                     setUsername('No username found');
                 }
-            })
-            .catch(error => {
+            } catch (error) {
                 console.log('Error:', error);
                 setUsername('Error fetching username');
-            });
+            }
+        };
+
+        fetchData();
     }, []);
 
     return (
@@ -29,4 +34,5 @@ function Student(){
         </>
     );
 }
+
 export default Student;

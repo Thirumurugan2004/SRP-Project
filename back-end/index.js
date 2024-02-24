@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 const mysql = require('mysql');
-const cors = require('cors');
+const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const app = express();
 const port = 5000;
@@ -50,8 +50,8 @@ app.use(session({
 }));
 
 // Route for user authentication and session creation
-app.get('/login', (req, res) => {
-  const { username, password,role } = req.query;
+app.post('/login', (req, res) => {
+  const { username, password,role } = req.body;
 console.log('login request');
 console.log(username);
 console.log(password);
