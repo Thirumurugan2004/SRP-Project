@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Container, Card, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios'; // Import Axios library
@@ -7,7 +7,19 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('student');
+axios.defaults.withCredentials = true; 
+useEffect(() => {
+  // Delete session if present
+  const deleteSession = async () => {
+    try {
+      await axios.get('http://localhost:5000/delete-session', { withCredentials: true });
+    } catch (error) {
+      console.error('Error deleting session:', error);
+    }
+  };
 
+  deleteSession();
+}, []);
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -32,6 +44,7 @@ const Login = () => {
         window.location.href = '/'; // Redirect to login page if authentication is not successful
       }
     } catch (error) {
+      alert("wrong username or password");
       console.error('Error:', error);
     }
   };

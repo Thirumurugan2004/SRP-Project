@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Import Axios library
-
+import Navbarfun from './Navbarfun';
 function Teacher() {
     const [username, setUsername] = useState('');
 
@@ -29,6 +29,7 @@ function Teacher() {
 
     return (
         <>
+        <Navbarfun/>
             <h1>Teacher</h1>
             <p>Welcome, {username}</p>
         </>

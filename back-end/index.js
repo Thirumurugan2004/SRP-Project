@@ -37,7 +37,8 @@ db.connect((err) => {
 // Body parser middleware
 app.use(bodyParser.json());
 app.use(cors({
-  origin: 'http://localhost:3000', // Update with your frontend origin
+  origin: 'http://localhost:3000', 
+  methods:["POST","GET"],// Update with your frontend origin
   credentials: true // Allow credentials (cookies) to be sent
 }));
 
@@ -77,10 +78,21 @@ console.log(role);
     }
   });
 });
-
+app.get('/delete-session', (req, res) => {
+  // Clear the session data
+  req.session.destroy((err) => {
+      if (err) {
+          console.error('Error destroying session:', err);
+          res.status(500).send('Error destroying session');
+      } else {
+          // Redirect or send a response indicating successful deletion
+          res.send('Session deleted successfully');
+      }
+  });
+});
 // Route for retrieving session information
 app.get('/session', (req, res) => {
-  const username = req.session.username || 'no username';
+  const username = req.session.username;
   const isAuthenticated = req.session.isAuthenticated ||false;
   // Retrieve session information directly from the sessions table
  
