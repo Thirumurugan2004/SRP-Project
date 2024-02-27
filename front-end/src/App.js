@@ -11,24 +11,6 @@ import ViewStudentOther from './students/view/otherdata';
 import EditStudentPersonal from './students/edit/personaldata';
 
 function App() {
-  useEffect(() => {
-    const fetchUsername = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/session');
-        if (!response.ok) {
-          throw new Error('Failed to fetch username');
-        }
-        const data = await response.json();
-        const username = data.username;
-        console.log('Username:', username);
-      } catch (error) {
-        console.error('Error fetching username:', error);
-      }
-    };
-
-    fetchUsername();
-  }, []); 
-//pass the username as props to view and edit
   return (
     <BrowserRouter>
       <Routes>

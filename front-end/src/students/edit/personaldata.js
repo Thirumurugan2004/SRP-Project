@@ -12,7 +12,7 @@ function EditStudentPersonal() {
     });
     const [successMessage, setSuccessMessage] = useState('');
     const navigate = useNavigate(); // useNavigate hook for navigation
-
+    axios.defaults.withCredentials = true; 
     useEffect(() => {
         const fetchStudentDetails = async () => {
             try {

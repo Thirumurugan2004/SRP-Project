@@ -4,7 +4,7 @@ import Navbarfun from '../../usercomponents/Navbarfun';
 
 function ViewStudentPersonal() {
     const [studentDetails, setStudentDetails] = useState(null);
-
+    axios.defaults.withCredentials = true; 
     useEffect(() => {
         axios.get('http://localhost:5000/session')
             .then(response => {
