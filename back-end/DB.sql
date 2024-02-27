@@ -50,7 +50,13 @@ CREATE TABLE StudentDetails (
     RollNumber INT PRIMARY KEY,
     DateOfBirth DATE,
     Address VARCHAR(255),
-    Phone VARCHAR(20)
+    Phone VARCHAR(20),
+    Sex ENUM('Male','Female'),
+    Blood_Group varchar(10),
+    FatherName varchar(50,
+    Mothername varchar(50),
+    Fatheroccupation varchar(50),
+    Motheroccupation varchar(50)
 );
 
 -- Table to store achievements of students
@@ -87,6 +93,8 @@ CREATE TABLE student_academic_details (
     CurrentSemester INT,
     PreviousSemester INT,
     -- Add other academic details as needed
+    TenthMarks INT,
+    HigherSecondaryMarks INT,
     FOREIGN KEY (RollNumber) REFERENCES Students(RollNumber)
 );
 
