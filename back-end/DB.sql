@@ -50,8 +50,7 @@ CREATE TABLE StudentDetails (
     RollNumber INT PRIMARY KEY,
     DateOfBirth DATE,
     Address VARCHAR(255),
-    Phone VARCHAR(20),
-    -- Add other personal details as needed
+    Phone VARCHAR(20)
 );
 
 -- Table to store achievements of students

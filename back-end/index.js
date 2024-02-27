@@ -38,7 +38,7 @@ db.connect((err) => {
 app.use(bodyParser.json());
 app.use(cors({
   origin: 'http://localhost:3000', 
-  methods:["POST","GET"],// Update with your frontend origin
+  methods:["POST","GET","PUT"],// Update with your frontend origin
   credentials: true // Allow credentials (cookies) to be sent
 }));
 
@@ -94,13 +94,31 @@ app.get('/delete-session', (req, res) => {
 app.get('/session', (req, res) => {
   const username = req.session.username;
   const isAuthenticated = req.session.isAuthenticated ||false;
-  // Retrieve session information directly from the sessions table
- 
     console.log('Retrieved Username:', username);
-    res.json({ username, isAuthenticated });
+    res.json({ username });
   
 });
-
+app.get('/studentDetails/:username', (req, res) => {
+  const { username } = req.params;
+  const sql = 'SELECT * FROM StudentDetails WHERE RollNumber = ?';
+  db.query(sql, [username], (err, result) => {
+      if (err) {
+          throw err;
+      }
+      res.json(result[0]); // Assuming you expect only one row of data
+  });
+});
+app.put('/updateStudentDetails/:username', (req, res) => {
+  const { username } = req.params;
+  const updatedData = req.body;
+  const sql = 'UPDATE StudentDetails SET DateOfBirth = ?, Address = ?, Phone = ? WHERE RollNumber = ?';
+  db.query(sql, [updatedData.DateOfBirth, updatedData.Address, updatedData.Phone, username], (err, result) => {
+      if (err) {
+          throw err;
+      }
+      res.send('Student details updated successfully');
+  });
+});
 // Logout route to destroy session
 app.get('/logout', (req, res) => {
   const username = req.session.username;
