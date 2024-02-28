@@ -46,6 +46,13 @@ function ViewStudentPersonal() {
                         <p><strong>Date of Birth:</strong> {studentDetails.DateOfBirth}</p>
                         <p><strong>Address:</strong> {studentDetails.Address}</p>
                         <p><strong>Phone:</strong> {studentDetails.Phone}</p>
+                        {/* Newly added fields */}
+                        <p><strong>Sex:</strong> {studentDetails.Sex}</p>
+                        <p><strong>Blood Group:</strong> {studentDetails.Blood_Group}</p>
+                        <p><strong>Father's Name:</strong> {studentDetails.FatherName}</p>
+                        <p><strong>Mother's Name:</strong> {studentDetails.Mothername}</p>
+                        <p><strong>Father's Occupation:</strong> {studentDetails.Fatheroccupation}</p>
+                        <p><strong>Mother's Occupation:</strong> {studentDetails.Motheroccupation}</p>
                     </div>
                 )}
             </div>

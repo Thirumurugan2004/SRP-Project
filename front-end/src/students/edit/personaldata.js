@@ -8,7 +8,13 @@ function EditStudentPersonal() {
         RollNumber: '',
         DateOfBirth: '',
         Address: '',
-        Phone: ''
+        Phone: '',
+        Sex: '',
+        Blood_Group: '',
+        FatherName: '',
+        Mothername: '',
+        Fatheroccupation: '',
+        Motheroccupation: ''
     });
     const [successMessage, setSuccessMessage] = useState('');
     const navigate = useNavigate(); // useNavigate hook for navigation
@@ -68,6 +74,30 @@ function EditStudentPersonal() {
                     <div>
                         <label>Phone:</label>
                         <input type="text" name="Phone" value={studentData.Phone} onChange={handleChange} />
+                    </div>
+                    <div>
+                        <label>Sex:</label>
+                        <input type="text" name="Sex" value={studentData.Sex} onChange={handleChange} />
+                    </div>
+                    <div>
+                        <label>Blood Group:</label>
+                        <input type="text" name="Blood_Group" value={studentData.Blood_Group} onChange={handleChange} />
+                    </div>
+                    <div>
+                        <label>Father's Name:</label>
+                        <input type="text" name="FatherName" value={studentData.FatherName} onChange={handleChange} />
+                    </div>
+                    <div>
+                        <label>Mother's Name:</label>
+                        <input type="text" name="Mothername" value={studentData.Mothername} onChange={handleChange} />
+                    </div>
+                    <div>
+                        <label>Father's Occupation:</label>
+                        <input type="text" name="Fatheroccupation" value={studentData.Fatheroccupation} onChange={handleChange} />
+                    </div>
+                    <div>
+                        <label>Mother's Occupation:</label>
+                        <input type="text" name="Motheroccupation" value={studentData.Motheroccupation} onChange={handleChange} />
                     </div>
                     <button type="submit">Submit</button>
                 </form>
