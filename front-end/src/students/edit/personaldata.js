@@ -16,7 +16,7 @@ function EditStudentPersonal() {
         Fatheroccupation: '',
         Motheroccupation: ''
     });
-
+  
     const [successMessage, setSuccessMessage] = useState('');
     const navigate = useNavigate(); // useNavigate hook for navigation
 var fetchedUsername;
@@ -41,22 +41,6 @@ var fetchedUsername;
 
         fetchStudentDetails();
     }, []);
-
-    const formatStudentData = (data) => {
-        return {
-            ...data,
-            DateOfBirth: formatDate(data.DateOfBirth)
-        };
-    };
-
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        const year = date.getFullYear();
-        let month = (1 + date.getMonth()).toString().padStart(2, '0');
-        let day = date.getDate().toString().padStart(2, '0');
-
-        return `${year}-${month}-${day}`;
-    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -98,7 +82,7 @@ var fetchedUsername;
                 <form onSubmit={handleSubmit}>
                     <div>
                         <label>Date of Birth:</label>
-                        <input type="date" name="DateOfBirth" value={studentData.DateOfBirth || ""} onChange={handleChange} />
+                        <input type="date" name="DateOfBirth" value={studentData.DateOfBirth} onChange={handleChange} />
                     </div>
                     <div>
                         <label>Address:</label>
