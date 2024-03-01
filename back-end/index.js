@@ -100,6 +100,7 @@ app.get('/session', (req, res) => {
 });
 app.get('/studentDetails/:username', (req, res) => {
   const { username } = req.params;
+  console.log('studentDetails:', username);
   const sql = 'SELECT * FROM StudentDetails WHERE RollNumber = ?';
   db.query(sql, [username], (err, result) => {
       if (err) {
@@ -119,6 +120,47 @@ app.put('/updateStudentDetails/:username', (req, res) => {
       res.send('Student details updated successfully');
   });
 });
+app.post('/addStudentDetails/:rollNumber', (req, res) => {
+  const {rollNumber} = req.params;
+  console.log("addsd",rollNumber);
+  const newStudentData = req.body;
+
+  // Check if the RollNumber already exists in the database
+  const checkExistingQuery = 'SELECT * FROM StudentDetails WHERE RollNumber = ?';
+  db.query(checkExistingQuery, [rollNumber], (checkError, checkResult) => {
+      if (checkError) {
+          throw checkError;
+      }
+
+      // If RollNumber doesn't exist, insert new student details
+      if (checkResult.length === 0) {
+          const insertQuery = 'INSERT INTO StudentDetails (RollNumber, DateOfBirth, Address, Phone, Sex, Blood_Group, FatherName, Mothername, Fatheroccupation, Motheroccupation) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+          const insertValues = [
+              rollNumber,
+              newStudentData.DateOfBirth,
+              newStudentData.Address,
+              newStudentData.Phone,
+              newStudentData.Sex,
+              newStudentData.Blood_Group,
+              newStudentData.FatherName,
+              newStudentData.Mothername,
+              newStudentData.Fatheroccupation,
+              newStudentData.Motheroccupation
+          ];
+
+          db.query(insertQuery, insertValues, (insertError, insertResult) => {
+              if (insertError) {
+                  throw insertError;
+              }
+              res.send('Student details added successfully');
+          });
+      } else {
+          // If RollNumber already exists, send a message indicating that the student already exists
+          res.status(400).send('Student with this RollNumber already exists');
+      }
+  });
+});
+
 // Logout route to destroy session
 app.get('/logout', (req, res) => {
   const username = req.session.username;

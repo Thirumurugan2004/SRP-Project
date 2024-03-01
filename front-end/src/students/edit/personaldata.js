@@ -16,7 +16,7 @@ function EditStudentPersonal() {
         Fatheroccupation: '',
         Motheroccupation: ''
     });
-  
+
     const [successMessage, setSuccessMessage] = useState('');
     const navigate = useNavigate(); // useNavigate hook for navigation
 var fetchedUsername;
@@ -24,7 +24,7 @@ var fetchedUsername;
         const fetchStudentDetails = async () => {
             try {
                 const response = await axios.get('http://localhost:5000/session');
-               fetchedUsername = response.data.username;
+                fetchedUsername = response.data.username;
                 console.log("username from editsd", fetchedUsername);
                 const studentResponse = await axios.get(`http://localhost:5000/studentDetails/${fetchedUsername}`);
                 if (studentResponse.data) {
@@ -41,6 +41,22 @@ var fetchedUsername;
 
         fetchStudentDetails();
     }, []);
+
+    const formatStudentData = (data) => {
+        return {
+            ...data,
+            DateOfBirth: formatDate(data.DateOfBirth)
+        };
+    };
+
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        let month = (1 + date.getMonth()).toString().padStart(2, '0');
+        let day = date.getDate().toString().padStart(2, '0');
+
+        return `${year}-${month}-${day}`;
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -60,8 +76,10 @@ var fetchedUsername;
                 setSuccessMessage('Student data updated successfully');
             } else {
                 // If RollNumber doesn't exist, add student details
-                const response = await axios.post(`http://localhost:5000/addStudentDetails/${fetchedUsername}`, studentData);
-                console.log('Student data added successfully:', response.data);
+                const response = await axios.get('http://localhost:5000/session');
+                fetchedUsername = response.data.username;
+                const response1 = await axios.post(`http://localhost:5000/addStudentDetails/${fetchedUsername}`, studentData);
+                console.log('Student data added successfully:', response1.data,fetchedUsername);
                 setSuccessMessage('Student data added successfully');
             }
 
@@ -82,7 +100,7 @@ var fetchedUsername;
                 <form onSubmit={handleSubmit}>
                     <div>
                         <label>Date of Birth:</label>
-                        <input type="date" name="DateOfBirth" value={studentData.DateOfBirth} onChange={handleChange} />
+                        <input type="date" name="DateOfBirth" value={studentData.DateOfBirth || ""} onChange={handleChange} />
                     </div>
                     <div>
                         <label>Address:</label>
