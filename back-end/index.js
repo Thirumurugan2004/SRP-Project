@@ -9,15 +9,16 @@ const app = express();
 const port = 5000;
 const store=new session.MemoryStore();
 app.use(cookieParser());
-// MySQL database configuration
+
+
 const dbConfig = {
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'ist_dept' // Update with your database name
+  database: 'ist_dept'
 };
 
-// Create a MySQL connection
+
 const db = mysql.createConnection({
   host: dbConfig.host,
   user: dbConfig.user,
@@ -25,24 +26,20 @@ const db = mysql.createConnection({
   database: dbConfig.database
 });
 
-// Connect to MySQL
+
 db.connect((err) => {
   if (err) throw err;
   console.log('Connected to MySQL database');
 });
 
-// Session store configuration
-
-
-// Body parser middleware
 app.use(bodyParser.json());
 app.use(cors({
   origin: 'http://localhost:3000', 
-  methods:["POST","GET","PUT"],// Update with your frontend origin
-  credentials: true // Allow credentials (cookies) to be sent
+  methods:["POST","GET","PUT"],
+  credentials: true 
 }));
 
-// Session middleware
+
 app.use(session({
   secret: 'temp',
   resave: true, 
@@ -50,7 +47,7 @@ app.use(session({
   store
 }));
 
-// Route for user authentication and session creation
+
 app.post('/login', (req, res) => {
   const { username, password,role } = req.body;
 console.log('login request');
@@ -58,7 +55,6 @@ console.log(username);
 console.log(password);
 console.log(role);
   const sql = `SELECT * FROM users WHERE username = ? AND password = ? AND role = ?`;
-
   db.query(sql, [username, password, role], (err, result) => {
     if (err) {
       console.error(err);
@@ -66,31 +62,30 @@ console.log(role);
     }
 
     if (result.length > 0) {
-      // Set session data upon successful login
       req.session.username = username;
       req.session.isAuthenticated = true;
       req.session.save();
       console.log(store);
-      // Insert or update session information in the sessions table
       res.send('Success');
     } else {
       res.status(401).send('Wrong credentials');
     }
   });
 });
+
+
 app.get('/delete-session', (req, res) => {
-  // Clear the session data
   req.session.destroy((err) => {
       if (err) {
           console.error('Error destroying session:', err);
           res.status(500).send('Error destroying session');
       } else {
-          // Redirect or send a response indicating successful deletion
           res.send('Session deleted successfully');
       }
   });
 });
-// Route for retrieving session information
+
+
 app.get('/session', (req, res) => {
   const username = req.session.username;
   const isAuthenticated = req.session.isAuthenticated ||false;
@@ -98,6 +93,8 @@ app.get('/session', (req, res) => {
     res.json({ username });
   
 });
+
+
 app.get('/studentDetails/:username', (req, res) => {
   const { username } = req.params;
   console.log('studentDetails:', username);
@@ -106,9 +103,11 @@ app.get('/studentDetails/:username', (req, res) => {
       if (err) {
           throw err;
       }
-      res.json(result[0]); // Assuming you expect only one row of data
+      res.json(result[0]); 
   });
 });
+
+
 app.put('/updateStudentDetails/:username', (req, res) => {
   const { username } = req.params;
   const updatedData = req.body;
@@ -120,19 +119,17 @@ app.put('/updateStudentDetails/:username', (req, res) => {
       res.send('Student details updated successfully');
   });
 });
+
+
 app.post('/addStudentDetails/:rollNumber', (req, res) => {
   const {rollNumber} = req.params;
   console.log("addsd",rollNumber);
   const newStudentData = req.body;
-
-  // Check if the RollNumber already exists in the database
   const checkExistingQuery = 'SELECT * FROM StudentDetails WHERE RollNumber = ?';
   db.query(checkExistingQuery, [rollNumber], (checkError, checkResult) => {
       if (checkError) {
           throw checkError;
       }
-
-      // If RollNumber doesn't exist, insert new student details
       if (checkResult.length === 0) {
           const insertQuery = 'INSERT INTO StudentDetails (RollNumber, DateOfBirth, Address, Phone, Sex, Blood_Group, FatherName, Mothername, Fatheroccupation, Motheroccupation) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
           const insertValues = [
@@ -155,13 +152,49 @@ app.post('/addStudentDetails/:rollNumber', (req, res) => {
               res.send('Student details added successfully');
           });
       } else {
-          // If RollNumber already exists, send a message indicating that the student already exists
           res.status(400).send('Student with this RollNumber already exists');
       }
   });
 });
 
-// Logout route to destroy session
+
+app.post('/changePassword/:username', (req, res) => {
+  const username = req.params.username;
+  const { oldPassword, newPassword } = req.body.loginDetails;
+  const selectQuery = 'SELECT password FROM users WHERE username = ?';
+  db.query(selectQuery, [username], (error, results) => {
+    if (error) {
+      console.error('Error retrieving password from database:', error);
+      res.status(500).json({ error: 'Internal server error' });
+      return;
+    }
+
+    if (results.length === 0) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+
+    const storedPassword = results[0].password;
+    if (storedPassword === oldPassword) {
+      const updateQuery = 'UPDATE users SET password = ? WHERE username = ?';
+
+      db.query(updateQuery, [newPassword, username], (updateError, updateResults) => {
+        if (updateError) {
+          console.error('Error updating password:', updateError);
+          res.status(500).json({ error: 'Internal server error' });
+          return;
+        }
+        console.log('Password updated successfully');
+        res.json({ message: 'Password updated successfully' });
+      });
+    } else {
+      console.log('Wrong old password');
+      res.status(400).json({ error: 'Wrong old password' });
+    }
+  });
+});
+
+
 app.get('/logout', (req, res) => {
   const username = req.session.username;
     req.session.destroy((err) => {
@@ -175,7 +208,7 @@ app.get('/logout', (req, res) => {
 
 });
 
-// Start server
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

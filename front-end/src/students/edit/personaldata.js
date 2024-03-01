@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import { useNavigate } from 'react-router-dom'; 
 import Navbarfun from '../../usercomponents/Navbarfun';
 
 function EditStudentPersonal() {
@@ -18,7 +18,7 @@ function EditStudentPersonal() {
     });
 
     const [successMessage, setSuccessMessage] = useState('');
-    const navigate = useNavigate(); // useNavigate hook for navigation
+    const navigate = useNavigate(); 
 var fetchedUsername;
     useEffect(() => {
         const fetchStudentDetails = async () => {
@@ -31,7 +31,6 @@ var fetchedUsername;
                     const formattedStudentData = formatStudentData(studentResponse.data);
                     setStudentData(formattedStudentData);
                 } else {
-                    // If student details not found, you may handle accordingly
                     console.log("Student details not found");
                 }
             } catch (error) {
@@ -70,12 +69,10 @@ var fetchedUsername;
         e.preventDefault();
         try {
             if (studentData.RollNumber) {
-                // If RollNumber exists, update student details
                 const response = await axios.put(`http://localhost:5000/updateStudentDetails/${studentData.RollNumber}`, studentData);
                 console.log('Student data updated successfully:', response.data);
                 setSuccessMessage('Student data updated successfully');
             } else {
-                // If RollNumber doesn't exist, add student details
                 const response = await axios.get('http://localhost:5000/session');
                 fetchedUsername = response.data.username;
                 const response1 = await axios.post(`http://localhost:5000/addStudentDetails/${fetchedUsername}`, studentData);
@@ -86,7 +83,7 @@ var fetchedUsername;
             setTimeout(() => {
                 setSuccessMessage('');
                 navigate('/student/view/personaldata', { replace: true }); // Redirect to ViewPersonalData page
-            }, 2000); // Redirect after 2 seconds
+            }, 2000);
         } catch (error) {
             console.error('Error updating/adding student data:', error);
         }
