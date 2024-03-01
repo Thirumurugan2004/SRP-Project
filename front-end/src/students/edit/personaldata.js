@@ -16,6 +16,7 @@ function EditStudentPersonal() {
         Fatheroccupation: '',
         Motheroccupation: ''
     });
+  
     const [successMessage, setSuccessMessage] = useState('');
     const navigate = useNavigate(); // useNavigate hook for navigation
     axios.defaults.withCredentials = true; 
@@ -23,9 +24,11 @@ function EditStudentPersonal() {
         const fetchStudentDetails = async () => {
             try {
                 const response = await axios.get('http://localhost:5000/session');
-                const username = response.data.username;
-                const studentResponse = await axios.get(`http://localhost:5000/studentDetails/${username}`);
-                setStudentData(studentResponse.data);
+                const fetchedUsername = response.data.username;
+                console.log("username from editsd", fetchedUsername);
+                const studentResponse = await axios.get(`http://localhost:5000/studentDetails/${fetchedUsername}`);
+                const formattedStudentData = formatStudentData(studentResponse.data);
+                setStudentData(formattedStudentData);
             } catch (error) {
                 console.error('Error fetching student details:', error);
             }
@@ -33,6 +36,22 @@ function EditStudentPersonal() {
 
         fetchStudentDetails();
     }, []);
+
+    const formatStudentData = (data) => {
+        return {
+            ...data,
+            DateOfBirth: formatDate(data.DateOfBirth)
+        };
+    };
+
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        let month = (1 + date.getMonth()).toString().padStart(2, '0');
+        let day = date.getDate().toString().padStart(2, '0');
+
+        return `${year}-${month}-${day}`;
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -65,7 +84,7 @@ function EditStudentPersonal() {
                 <form onSubmit={handleSubmit}>
                     <div>
                         <label>Date of Birth:</label>
-                        <input type="date" name="DateOfBirth" value={studentData.DateOfBirth} onChange={handleChange} />
+                        <input type="date" name="DateOfBirth" value={studentData.DateOfBirth || ""} onChange={handleChange} />
                     </div>
                     <div>
                         <label>Address:</label>
