@@ -98,7 +98,6 @@ app.get('/session', (req, res) => {
     res.json({ username });
   
 });
-
 app.get('/studentDetails/:username', (req, res) => {
   const { username } = req.params;
   const sql = 'SELECT * FROM StudentDetails WHERE RollNumber = ?';
@@ -106,15 +105,9 @@ app.get('/studentDetails/:username', (req, res) => {
       if (err) {
           throw err;
       }
-      if (result.length > 0) {
-         
-          res.json(result);
-      } else {
-          res.status(404).json({ message: 'Student details not found' });
-      }
+      res.json(result[0]); // Assuming you expect only one row of data
   });
 });
-
 app.put('/updateStudentDetails/:username', (req, res) => {
   const { username } = req.params;
   const updatedData = req.body;

@@ -16,19 +16,24 @@ function EditStudentPersonal() {
         Fatheroccupation: '',
         Motheroccupation: ''
     });
-  
+
     const [successMessage, setSuccessMessage] = useState('');
     const navigate = useNavigate(); // useNavigate hook for navigation
-    axios.defaults.withCredentials = true; 
+var fetchedUsername;
     useEffect(() => {
         const fetchStudentDetails = async () => {
             try {
                 const response = await axios.get('http://localhost:5000/session');
-                const fetchedUsername = response.data.username;
+               fetchedUsername = response.data.username;
                 console.log("username from editsd", fetchedUsername);
                 const studentResponse = await axios.get(`http://localhost:5000/studentDetails/${fetchedUsername}`);
-                const formattedStudentData = formatStudentData(studentResponse.data);
-                setStudentData(formattedStudentData);
+                if (studentResponse.data) {
+                    const formattedStudentData = formatStudentData(studentResponse.data);
+                    setStudentData(formattedStudentData);
+                } else {
+                    // If student details not found, you may handle accordingly
+                    console.log("Student details not found");
+                }
             } catch (error) {
                 console.error('Error fetching student details:', error);
             }
@@ -64,15 +69,24 @@ function EditStudentPersonal() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.put(`http://localhost:5000/updateStudentDetails/${studentData.RollNumber}`, studentData);
-            console.log('Student data updated successfully:', response.data);
-            setSuccessMessage('Student data updated successfully');
+            if (studentData.RollNumber) {
+                // If RollNumber exists, update student details
+                const response = await axios.put(`http://localhost:5000/updateStudentDetails/${studentData.RollNumber}`, studentData);
+                console.log('Student data updated successfully:', response.data);
+                setSuccessMessage('Student data updated successfully');
+            } else {
+                // If RollNumber doesn't exist, add student details
+                const response = await axios.post(`http://localhost:5000/addStudentDetails/${fetchedUsername}`, studentData);
+                console.log('Student data added successfully:', response.data);
+                setSuccessMessage('Student data added successfully');
+            }
+
             setTimeout(() => {
                 setSuccessMessage('');
                 navigate('/student/view/personaldata', { replace: true }); // Redirect to ViewPersonalData page
             }, 2000); // Redirect after 2 seconds
         } catch (error) {
-            console.error('Error updating student data:', error);
+            console.error('Error updating/adding student data:', error);
         }
     };
 
