@@ -2,7 +2,7 @@
 
 /* Container styles */
 .view-container {
-    max-width: 800px;
+    max-width: 75%;
     margin: 0 auto;
     padding: 20px;
 }
@@ -42,4 +42,10 @@
 .view-form img {
     max-width: 150px; /* Adjust width as needed */
     float: right;
+}
+@media (max-width: 900px) {
+
+    .view-form{
+     
+    }
 }
