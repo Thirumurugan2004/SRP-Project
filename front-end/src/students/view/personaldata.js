@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbarfun from '../../usercomponents/Navbarfun';
-
+import '../../CSS/view.css';
 function ViewStudentPersonal() {
     const [studentDetails, setStudentDetails] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
@@ -46,22 +46,23 @@ function ViewStudentPersonal() {
     return (
         <>
             <Navbarfun />
-            <div>
-                <h2>Student Personal Details</h2>
+            <div className='view-container'>
+                <h2 className='view-heading'>Student Personal Details</h2>
                 {errorMessage && <p>{errorMessage}</p>}
                 {studentDetails && (
-                    <div>
-                        <p><strong>Roll Number:</strong> {studentDetails.RollNumber}</p>
-                        <p><strong>Date of Birth:</strong> {studentDetails.DateOfBirth}</p>
-                        <p><strong>Address:</strong> {studentDetails.Address}</p>
-                        <p><strong>Phone:</strong> {studentDetails.Phone}</p>
+                    <div className='view-form'>
+                        <img alt='img'/>
+                        <p className='view-field'><strong>Roll Number:</strong> {studentDetails.RollNumber}</p>
+                        <p className='view-field'><strong>Date of Birth:</strong> {studentDetails.DateOfBirth}</p>
+                        <p className='view-field'><strong>Address:</strong> {studentDetails.Address}</p>
+                        <p className='view-field'><strong>Phone:</strong> {studentDetails.Phone}</p>
                      
-                        <p><strong>Sex:</strong> {studentDetails.Sex}</p>
-                        <p><strong>Blood Group:</strong> {studentDetails.Blood_Group}</p>
-                        <p><strong>Father's Name:</strong> {studentDetails.FatherName}</p>
-                        <p><strong>Mother's Name:</strong> {studentDetails.Mothername}</p>
-                        <p><strong>Father's Occupation:</strong> {studentDetails.Fatheroccupation}</p>
-                        <p><strong>Mother's Occupation:</strong> {studentDetails.Motheroccupation}</p>
+                        <p className='view-field'><strong>Sex:</strong> {studentDetails.Sex}</p>
+                        <p className='view-field'><strong>Blood Group:</strong> {studentDetails.Blood_Group}</p>
+                        <p className='view-field'><strong>Father's Name:</strong> {studentDetails.FatherName}</p>
+                        <p className='view-field'><strong>Mother's Name:</strong> {studentDetails.Mothername}</p>
+                        <p className='view-field'><strong>Father's Occupation:</strong> {studentDetails.Fatheroccupation}</p>
+                        <p className='view-field'><strong>Mother's Occupation:</strong> {studentDetails.Motheroccupation}</p>
                     </div>
                 )}
             </div>

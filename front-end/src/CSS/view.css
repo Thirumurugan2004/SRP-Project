@@ -1,0 +1,45 @@
+/* view.css */
+
+/* Container styles */
+.view-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Heading styles */
+.view-heading {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Error message styles */
+.error-message {
+    color: red;
+    margin-top: 10px;
+}
+
+/* Form styles */
+.view-form {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    font-size: larger;
+}
+
+.view-form p {
+    margin: 0;
+}
+
+.view-form p strong {
+    font-weight: bold;
+    margin-right: 10px;
+}
+.view-field{
+    padding-top:10px;
+}
+.view-form img {
+    max-width: 150px; /* Adjust width as needed */
+    float: right;
+}

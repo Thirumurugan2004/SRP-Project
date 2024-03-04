@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; 
 import Navbarfun from '../../usercomponents/Navbarfun';
-
+import '../../CSS/edit.css'
 function EditStudentPersonal() {
     const [studentData, setStudentData] = useState({
         RollNumber: '',
@@ -92,42 +92,42 @@ var fetchedUsername;
     return (
         <>
             <Navbarfun />
-            <div>
-                <h1>Edit Student Personal Data</h1>
-                <form onSubmit={handleSubmit}>
-                    <div>
+            <div classname='edit-container'>
+                <h1 className='edit-heading'>Edit Student Personal Data</h1>
+                <form className='edit-form' onSubmit={handleSubmit}>
+                    <div className='edit-div'>
                         <label>Date of Birth:</label>
                         <input type="date" name="DateOfBirth" value={studentData.DateOfBirth || ""} onChange={handleChange} />
                     </div>
-                    <div>
+                    <div className='edit-div'>
                         <label>Address:</label>
                         <input type="text" name="Address" value={studentData.Address} onChange={handleChange} />
                     </div>
-                    <div>
+                    <div className='edit-div'>
                         <label>Phone:</label>
                         <input type="text" name="Phone" value={studentData.Phone} onChange={handleChange} />
                     </div>
-                    <div>
+                    <div className='edit-div'>
                         <label>Sex:</label>
                         <input type="text" name="Sex" value={studentData.Sex} onChange={handleChange} />
                     </div>
-                    <div>
+                    <div className='edit-div'>
                         <label>Blood Group:</label>
                         <input type="text" name="Blood_Group" value={studentData.Blood_Group} onChange={handleChange} />
                     </div>
-                    <div>
+                    <div className='edit-div'>
                         <label>Father's Name:</label>
                         <input type="text" name="FatherName" value={studentData.FatherName} onChange={handleChange} />
                     </div>
-                    <div>
+                    <div className='edit-div'>
                         <label>Mother's Name:</label>
                         <input type="text" name="Mothername" value={studentData.Mothername} onChange={handleChange} />
                     </div>
-                    <div>
+                    <div className='edit-div'>
                         <label>Father's Occupation:</label>
                         <input type="text" name="Fatheroccupation" value={studentData.Fatheroccupation} onChange={handleChange} />
                     </div>
-                    <div>
+                    <div className='edit-div'>
                         <label>Mother's Occupation:</label>
                         <input type="text" name="Motheroccupation" value={studentData.Motheroccupation} onChange={handleChange} />
                     </div>
