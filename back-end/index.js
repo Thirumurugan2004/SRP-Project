@@ -167,6 +167,28 @@ app.get('/studentDetails/:username', (req, res) => {
   });
 });
 
+app.get('/InternshipDetails/:username', (req, res) => {
+  const { username } = req.params;
+  const sql = 'SELECT * FROM Internship WHERE roll_number = ?';
+  db.query(sql, [username], (err, result) => {
+      if (err) {
+          throw err;
+      }
+      res.json(result[0]); 
+  });
+});
+
+app.get('/ScholarshipDetails/:username', (req, res) => {
+  const { username } = req.params;
+  const sql = 'SELECT * FROM Scholarship WHERE roll_number = ?';
+  db.query(sql, [username], (err, result) => {
+      if (err) {
+          throw err;
+      }
+      res.json(result[0]); 
+  });
+});
+
 
 app.put('/updateStudentDetails/:username', (req, res) => {
   const { username } = req.params;

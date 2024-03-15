@@ -28,15 +28,6 @@ function ViewStudentPersonal() {
                             setErrorMessage('No student details available');
                         }
                         console.log(RollNumber);
-                //         axios.get(`http://localhost:5000/getImage/${RollNumber}`)
-                //   .then(response => {
-                //     const imageData = response.data.data;
-                //     const base64String = Buffer.from(imageData).toString('base64');
-                //     setStudentImage(`data:image/png;base64,${base64String}`);
-                //   })
-                //   .catch(error => {
-                //     setError('Error fetching image data');
-                //   });
                     })
                     .catch(error => {
                         console.error('Error fetching student details:', error);
@@ -44,11 +35,7 @@ function ViewStudentPersonal() {
             })
             .catch(error => {
                 console.error('Error fetching username:', error);
-            });
-            if (true) {
-                
-              }
-
+            });    
     }, []);
 
     const formatDate = (dateString) => {
