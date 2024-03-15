@@ -5,11 +5,14 @@ const MySQLStore = require('express-mysql-session')(session);
 const mysql = require('mysql');
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const multer=require('multer');
+const path=require('path');
 const app = express();
+const fs = require('fs');
 const port = 5000;
 const store=new session.MemoryStore();
 app.use(cookieParser());
-
+app.use(express.static('prof-image'));
 
 const dbConfig = {
   host: 'localhost',
@@ -47,6 +50,63 @@ app.use(session({
   store
 }));
 
+const storage=multer.diskStorage(
+  {
+    destination: (req, file, cb) => {
+      const directory ='prof-image/'+ path.dirname(file.originalname);
+      cb(null, directory);
+    },
+    filename: (req, file, cb) => {
+      cb(null, file.fieldname+"_"+Date.now()+path.extname(file.originalname));
+    }
+  }
+)
+const upload=multer({
+  storage:storage
+})
+
+
+app.post('/upload/:RollNumber',upload.single('image'),(req,res)=>{
+  const {RollNumber}=req.params;
+  console.log(RollNumber,"Obtained roll number");
+  const image=req.file.filename;
+  const sql1="update studentdetails set StudentImage=? where RollNumber=?";
+  db.query(sql1,[image,RollNumber],(err,result)=>{
+    if(err) return res.json({message:"Error"});
+    return res.json({status:"Success"});
+  })
+})
+
+
+app.get('/getImage/:RollNumber', (req, res) => {
+  const { RollNumber } = req.params;
+  console.log(RollNumber, "Obtained roll number");
+
+  const sql1 = "SELECT StudentImage FROM studentdetails WHERE RollNumber=?";
+  db.query(sql1, [RollNumber], (err, result) => {
+    if (err) return res.json({ message: "Error" });
+
+    if (result.length === 0 || !result[0].StudentImage) {
+      return res.json({ message: "Image not found" });
+    }
+
+    const imageName = result[0].StudentImage;
+
+    const imagePath = path.join(__dirname, 'prof-image', imageName);
+
+    if (!fs.existsSync(imagePath)) {
+      return res.json({ message: "Image not found" });
+    }
+    fs.readFile(imagePath, (err, data) => {
+      if (err) {
+        console.error('Error reading image file:', err);
+        return res.json({ message: "Error reading image file" });
+      }
+      res.writeHead(200, { 'Content-Type': 'image/*' });
+      res.end(data);
+    });
+  });
+});
 
 app.post('/login', (req, res) => {
   const { username, password,role } = req.body;

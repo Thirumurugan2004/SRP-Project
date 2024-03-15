@@ -18,6 +18,7 @@ function EditStudentPersonal() {
     });
 
     const [successMessage, setSuccessMessage] = useState('');
+    const  [file,Setfile]=useState();
     const navigate = useNavigate(); 
 var fetchedUsername;
     useEffect(() => {
@@ -25,11 +26,13 @@ var fetchedUsername;
             try {
                 const response = await axios.get('http://localhost:5000/session');
                 fetchedUsername = response.data.username;
-                console.log("username from editsd", fetchedUsername);
                 const studentResponse = await axios.get(`http://localhost:5000/studentDetails/${fetchedUsername}`);
+               
+
                 if (studentResponse.data) {
                     const formattedStudentData = formatStudentData(studentResponse.data);
                     setStudentData(formattedStudentData);
+              
                 } else {
                     console.log("Student details not found");
                 }
@@ -88,7 +91,24 @@ var fetchedUsername;
             console.error('Error updating/adding student data:', error);
         }
     };
+const handleFile=(e)=>{
+    Setfile(e.target.files[0]);
+}
+const handleUpload=(e)=>{
+const formdata=new FormData();
+formdata.append('image',file);
+axios.post(`http://localhost:5000/upload/${studentData.RollNumber}`,formdata)
+.then(res=>{
+    if(res.data.status === 'Success'){
+        console.log("succeed");
+    }
+    else{
+        console.log("failed");
+    }
 
+})
+.catch(err=>console.log(err));
+}
     return (
         <>
             <Navbarfun />
@@ -129,8 +149,9 @@ var fetchedUsername;
                     
                         <label className='edit-label'>Mother's Occupation:</label>
                         <input className='edit-input' type="text" name="Motheroccupation" value={studentData.Motheroccupation} onChange={handleChange} />
-                   
-                    <br/><button type="submit">Submit</button>
+                   <br/>
+                   <input type="file" onChange={handleFile}></input>
+                    <br/><button type="submit" onClick={handleUpload}>Submit</button>
                 </form>
                 {successMessage && <div className="success-message">{successMessage}</div>}
             </div>

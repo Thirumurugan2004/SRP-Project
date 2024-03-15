@@ -5,6 +5,8 @@ import '../../CSS/view.css';
 function ViewStudentPersonal() {
     const [studentDetails, setStudentDetails] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
+    const [studentImage, setStudentImage] = useState('');
+    const [error, setError] = useState('');
     axios.defaults.withCredentials = true; 
     useEffect(() => {
         axios.get('http://localhost:5000/session')
@@ -20,10 +22,21 @@ function ViewStudentPersonal() {
                                 DateOfBirth: formatDate(response.data.DateOfBirth)
                             };
                             console.log(formattedStudentDetails);
+                            var RollNumber=formattedStudentDetails.RollNumber;
                             setStudentDetails(formattedStudentDetails);
                         } else {
                             setErrorMessage('No student details available');
                         }
+                        console.log(RollNumber);
+                //         axios.get(`http://localhost:5000/getImage/${RollNumber}`)
+                //   .then(response => {
+                //     const imageData = response.data.data;
+                //     const base64String = Buffer.from(imageData).toString('base64');
+                //     setStudentImage(`data:image/png;base64,${base64String}`);
+                //   })
+                //   .catch(error => {
+                //     setError('Error fetching image data');
+                //   });
                     })
                     .catch(error => {
                         console.error('Error fetching student details:', error);
@@ -32,6 +45,10 @@ function ViewStudentPersonal() {
             .catch(error => {
                 console.error('Error fetching username:', error);
             });
+            if (true) {
+                
+              }
+
     }, []);
 
     const formatDate = (dateString) => {
@@ -51,7 +68,7 @@ function ViewStudentPersonal() {
                 {errorMessage && <p>{errorMessage}</p>}
                 {studentDetails && (
                     <div className='view-form'>
-                        <img alt='img'/>
+                        <img src={`http://localhost:5000/getImage/${studentDetails.RollNumber}`} alt='img'/>
                         <p className='view-field'><strong>Roll Number:</strong> {studentDetails.RollNumber}</p>
                         <p className='view-field'><strong>Date of Birth:</strong> {studentDetails.DateOfBirth}</p>
                         <p className='view-field'><strong>Address:</strong> {studentDetails.Address}</p>
