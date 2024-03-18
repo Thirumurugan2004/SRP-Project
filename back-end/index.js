@@ -189,6 +189,62 @@ app.get('/ScholarshipDetails/:username', (req, res) => {
   });
 });
 
+app.get('/ProjectDetails/:username', (req, res) => {
+  const { username } = req.params;
+  const sql = 'SELECT * FROM Project WHERE roll_number = ?';
+  db.query(sql, [username], (err, result) => {
+      if (err) {
+          throw err;
+      }
+      res.json(result[0]); 
+  });
+});
+
+
+app.get('/SportsDetails/:username', (req, res) => {
+  const { username } = req.params;
+  const sql = 'SELECT * FROM Sports WHERE roll_number = ?';
+  db.query(sql, [username], (err, result) => {
+      if (err) {
+          throw err;
+      }
+      res.json(result[0]); 
+  });
+});
+
+app.get('/ExamsDetails/:username', (req, res) => {
+  const { username } = req.params;
+  const sql = 'SELECT * FROM exams_attended WHERE roll_number = ?';
+  db.query(sql, [username], (err, result) => {
+      if (err) {
+          throw err;
+      }
+      res.json(result[0]); 
+  });
+});
+
+app.get('/PaperDetails/:username', (req, res) => {
+  const { username } = req.params;
+  const sql = 'SELECT * FROM paper_published WHERE roll_number = ?';
+  db.query(sql, [username], (err, result) => {
+      if (err) {
+          throw err;
+      }
+      res.json(result[0]); 
+  });
+});
+
+app.get('/EventDetails/:username', (req, res) => {
+  const { username } = req.params;
+  const sql = 'SELECT * FROM events WHERE roll_number = ?';
+  db.query(sql, [username], (err, result) => {
+      if (err) {
+          throw err;
+      }
+      res.json(result[0]); 
+  });
+});
+
 
 app.put('/updateStudentDetails/:username', (req, res) => {
   const { username } = req.params;
