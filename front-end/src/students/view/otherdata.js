@@ -4,13 +4,13 @@ import Navbarfun from '../../usercomponents/Navbarfun';
 import '../../CSS/view.css';
 function ViewStudentOther(){
     const [Username,setUsername]=useState(null);
-    const [Internship,setInternship]=useState(null);
-    const [Scholarship,setScholarship]=useState(null);
-    const [Project,setProject]=useState(null);
-    const [Sports,setSports]=useState(null);
-    const [Exams,setExams]=useState(null);
-    const [Paper,setPaper]=useState(null);
-    const [Events,setEvents]=useState(null);
+    const [internships,setInternships]=useState(null);
+    const [Scholarships,setScholarships]=useState(null);
+    const [projects,setProjects]=useState(null);
+    const [sports,setSports]=useState(null);
+    const [exams,setExams]=useState(null);
+    const [papers,setPapers]=useState(null);
+    const [events,setEvents]=useState(null);
     const [errorMessage, setErrorMessage] = useState('');
     axios.defaults.withCredentials = true; 
     useEffect(() => {
@@ -23,7 +23,7 @@ function ViewStudentOther(){
                         if (response.data) {
                             console.log(response.data);
                            
-                            setInternship(response.data);
+                            setInternships(response.data);
                         } else {
                             setErrorMessage('No Internship details available');
                         }
@@ -38,7 +38,7 @@ function ViewStudentOther(){
                         if (response.data) {
                             console.log(response.data);
                            
-                            setScholarship(response.data);
+                            setScholarships(response.data);
                         } else {
                             setErrorMessage('No Scholarship details available');
                         }
@@ -52,7 +52,7 @@ function ViewStudentOther(){
                         if (response.data) {
                             console.log(response.data);
                            
-                            setProject(response.data);
+                            setProjects(response.data);
                         } else {
                             setErrorMessage('No Project details available');
                         }
@@ -64,7 +64,7 @@ function ViewStudentOther(){
                     axios.get(`http://localhost:5000/SportsDetails/${username}`)
                     .then(response => {
                         if (response.data) {
-                            console.log(response.data);
+                            console.log("sports",response.data);
                            
                             setSports(response.data);
                         } else {
@@ -93,9 +93,8 @@ function ViewStudentOther(){
                     axios.get(`http://localhost:5000/PaperDetails/${username}`)
                     .then(response => {
                         if (response.data) {
-                            console.log(response.data);
-                           
-                            setPaper(response.data);
+                            setPapers(response.data);
+                            
                         } else {
                             setErrorMessage('No paper details available');
                         }
@@ -128,62 +127,86 @@ function ViewStudentOther(){
         <>
         <Navbarfun/>
        
-        {Internship && (
-<>
-<div className='view-form'>
-<h2>Internship Details</h2>
-                        <p className='view-field'><strong>Roll Number:</strong> {Internship.roll_number}</p>
-                        <p className='view-field'><strong>Employer:</strong> {Internship.employer_name}</p>
-                        <p className='view-field'><strong>On/Off campus:</strong> {Internship.on_off_campus}</p>
-                        <p className='view-field'><strong>CTC:</strong> {Internship.ctc}</p>
-                        <p className='view-field'><strong>Internship Duration:</strong> {Internship.InternshipDuration}</p>
-                        <p className='view-field'><strong>Internship StartDate:</strong> {Internship.InternshipStartDate}</p>
-                        <p className='view-field'><strong>Internship EndDate:</strong> {Internship.InternshipEndDate}</p>
-                        <p className='view-field'><strong>Product/Service Based :</strong> {Internship.product_service_based }</p>
- </div>
+        {internships && internships.map((internship, index) => (
+    <div className='view-form' key={index}>
+        <h2>Internship Details {index + 1}</h2>
+        <p className='view-field'><strong>Roll Number:</strong> {internship.roll_number}</p>
+        <p className='view-field'><strong>Employer:</strong> {internship.employer_name}</p>
+        <p className='view-field'><strong>On/Off campus:</strong> {internship.on_off_campus}</p>
+        <p className='view-field'><strong>CTC:</strong> {internship.ctc}</p>
+        <p className='view-field'><strong>Internship Duration:</strong> {internship.internship_duration}</p>
+        <p className='view-field'><strong>Internship StartDate:</strong> {internship.internship_start_date}</p>
+        <p className='view-field'><strong>Internship EndDate:</strong> {internship.internship_end_date}</p>
+        <p className='view-field'><strong>Product/Service Based :</strong> {internship.product_service_based}</p>
+        
+    </div>
+))}
+        {!Scholarships&&<h3>No Scholarshp details found</h3>}
+{Scholarships && Scholarships.map((Scholarship, index) => (
+    <div className='view-form' key={index}>
+        <h2>Scholarship Details {index + 1}</h2>
+        <p className='view-field'><strong>Scholarship Provider:</strong> {Scholarship.ScholarshipProvider}</p>
+        <p className='view-field'><strong>Amount:</strong> {Scholarship.amount}</p>
+   
+    </div>
+))}
 
+{projects && projects.map((project, index) => (
+    <div className='view-form' key={index}>
+        <h2>Project Details {index + 1}</h2>
+        <p className='view-field'><strong>Project Name:</strong> {project.title}</p>
+        <p className='view-field'><strong>Guide:</strong> {project.guide}</p>
+        <p className='view-field'><strong>Description:</strong> {project.project_desc}</p>
+   
+    </div>
+))}
+            {!projects && <h3>No Project details found</h3>}
 
-</>
-        )}
-{ Scholarship && <div className='view-form'>
-<h2>Scholarship Details</h2>
-                        <p className='view-field'><strong>Scholarship Provider:</strong> {Scholarship.ScholarshipProvider}</p>
-                        <p className='view-field'><strong>On/Off campus:</strong> {Scholarship.amount}</p>
-</div>}
+            {sports && sports.map((sport, index) => (
+    <div className='view-form' key={index}>
+        <h2>Sports Details {index + 1}</h2>
+        <p className='view-field'><strong>Event Name:</strong> {sport.event_name}</p>
+        <p className='view-field'><strong>Award:</strong> {sport.award}</p>
+    </div>
+))}
+            {!sports &&<h3>No sports details found</h3>}
+            {exams && (
+    <div className='view-form'>
+        <h2>Exams Attended</h2>
+        <p className='view-field'><strong>GATE Score:</strong> {exams.GATE_score}</p>
+        <p className='view-field'><strong>GRE Score:</strong> {exams.GRE_score}</p>
+        <p className='view-field'><strong>TOEFL Score:</strong> {exams.TOEFL_score}</p>
+        <p className='view-field'><strong>IELTS Score:</strong> {exams.IELTS_score}</p>
+        <p className='view-field'><strong>UPSC Score:</strong> {exams.UPSC_score}</p>
+        <p className='view-field'><strong>NET Score:</strong> {exams.NET_score}</p>
+    </div>
+)}
+            {!exams &&<h3>No exam details found</h3>}
 
-        {Project && 
-        <div className='view-form'>
-            <h2>Project Details</h2>
-           <p className='view-field'><strong>Project Name:</strong> {Project.title}</p>
-           <p className='view-field'><strong>Guide:</strong> {Project.guide}</p>
-           <p className='view-field'><strong>Description:</strong> {Project.project_desc}</p>
-            </div>}
-            {!Project && <h3>No Project details found</h3>}
-            {Sports && 
-        <div className='view-form'>
-            <h2>Sports Details</h2>
-           <p className='view-field'><strong>Event Name:</strong> {Sports.event_name}</p>
-           <p className='view-field'><strong>Award:</strong> {Sports.award}</p>
-          
-            </div>}
-            {!Sports &&<h3>No sports details found</h3>}
-            {Exams && 
-        <div className='view-form'>
-            <h2>Exams Attended</h2>
-            <p className='view-field'><strong>GATE Score</strong>{Exams.GATE_scoew}</p>
-            {/* to be filled in later */}
-            </div>}
-            {!Exams &&<h3>No exam details found</h3>}
-
-             {Paper && 
-        <div className='view-form'>
-            <h2>Papers Presented:</h2>
-            </div>}
-            {!Paper &&<h3>No paper details found</h3>}
-            {Events && <div className='view-form'>
-                <h2>Events Details</h2>
-                </div>}
-                {!Events &&<h3>No events details found</h3>}
+             
+       {papers && papers.map((paper, index) => (
+        <div className='view-form' key={index}>
+            <h2>Papers Presented {index + 1}</h2>
+            <p className='view-field'><strong>Title:</strong> {paper.title}</p>
+            <p className='view-field'><strong>Journal:</strong> {paper.journal}</p>
+            <p className='view-field'><strong>Date:</strong> {paper.date_year}</p>
+            <p className='view-field'><strong>DOI link:</strong> {paper.DOI_link}</p>
+      
+        </div>
+    ))}
+            {!papers &&<h3>No paper details found</h3>}
+            {events && events.map((event, index) => (
+    <div className='view-form' key={index}>
+        <h2>Events Details {index + 1}</h2>
+        <p className='view-field'><strong>Event Name:</strong> {event.event_name}</p>
+        <p className='view-field'><strong>Institution Name:</strong> {event.institution}</p>
+        <p className='view-field'><strong>Role:</strong> {event.role}</p>
+        <p className='view-field'><strong>Date:</strong> {event.date}</p>
+        <p className='view-field'><strong>Awards:</strong> {event.awards}</p>
+  
+    </div>
+))}
+                {!events &&<h3>No events details found</h3>}
         </>
     )
 }

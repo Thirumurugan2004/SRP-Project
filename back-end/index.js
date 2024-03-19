@@ -68,7 +68,6 @@ const upload=multer({
 
 app.post('/upload/:RollNumber',upload.single('image'),(req,res)=>{
   const {RollNumber}=req.params;
-  console.log(RollNumber,"Obtained roll number");
   const image=req.file.filename;
   const sql1="update studentdetails set StudentImage=? where RollNumber=?";
   db.query(sql1,[image,RollNumber],(err,result)=>{
@@ -80,7 +79,6 @@ app.post('/upload/:RollNumber',upload.single('image'),(req,res)=>{
 
 app.get('/getImage/:RollNumber', (req, res) => {
   const { RollNumber } = req.params;
-  console.log(RollNumber, "Obtained roll number");
 
   const sql1 = "SELECT StudentImage FROM studentdetails WHERE RollNumber=?";
   db.query(sql1, [RollNumber], (err, result) => {
@@ -110,10 +108,6 @@ app.get('/getImage/:RollNumber', (req, res) => {
 
 app.post('/login', (req, res) => {
   const { username, password,role } = req.body;
-console.log('login request');
-console.log(username);
-console.log(password);
-console.log(role);
   const sql = `SELECT * FROM users WHERE username = ? AND password = ? AND role = ?`;
   db.query(sql, [username, password, role], (err, result) => {
     if (err) {
@@ -125,7 +119,6 @@ console.log(role);
       req.session.username = username;
       req.session.isAuthenticated = true;
       req.session.save();
-      console.log(store);
       res.send('Success');
     } else {
       res.status(401).send('Wrong credentials');
@@ -149,7 +142,6 @@ app.get('/delete-session', (req, res) => {
 app.get('/session', (req, res) => {
   const username = req.session.username;
   const isAuthenticated = req.session.isAuthenticated ||false;
-    console.log('Retrieved Username:', username);
     res.json({ username });
   
 });
@@ -174,7 +166,7 @@ app.get('/InternshipDetails/:username', (req, res) => {
       if (err) {
           throw err;
       }
-      res.json(result[0]); 
+      res.json(result); 
   });
 });
 
@@ -185,7 +177,7 @@ app.get('/ScholarshipDetails/:username', (req, res) => {
       if (err) {
           throw err;
       }
-      res.json(result[0]); 
+      res.json(result); 
   });
 });
 
@@ -196,7 +188,7 @@ app.get('/ProjectDetails/:username', (req, res) => {
       if (err) {
           throw err;
       }
-      res.json(result[0]); 
+      res.json(result); 
   });
 });
 
@@ -208,7 +200,7 @@ app.get('/SportsDetails/:username', (req, res) => {
       if (err) {
           throw err;
       }
-      res.json(result[0]); 
+      res.json(result); 
   });
 });
 
@@ -230,7 +222,8 @@ app.get('/PaperDetails/:username', (req, res) => {
       if (err) {
           throw err;
       }
-      res.json(result[0]); 
+     
+      res.json(result); 
   });
 });
 
@@ -241,7 +234,7 @@ app.get('/EventDetails/:username', (req, res) => {
       if (err) {
           throw err;
       }
-      res.json(result[0]); 
+      res.json(result); 
   });
 });
 
@@ -261,7 +254,6 @@ app.put('/updateStudentDetails/:username', (req, res) => {
 
 app.post('/addStudentDetails/:rollNumber', (req, res) => {
   const {rollNumber} = req.params;
-  console.log("addsd",rollNumber);
   const newStudentData = req.body;
   const checkExistingQuery = 'SELECT * FROM StudentDetails WHERE RollNumber = ?';
   db.query(checkExistingQuery, [rollNumber], (checkError, checkResult) => {
