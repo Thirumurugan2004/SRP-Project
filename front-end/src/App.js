@@ -9,6 +9,7 @@ import ViewStudentPersonal from './students/view/personaldata';
 import ViewStudentAcademic from './students/view/academicdata';
 import ViewStudentOther from './students/view/otherdata';
 import EditStudentPersonal from './students/edit/personaldata';
+import EditStudentOther from './students/edit/otherdata';
 import Changepassword from './logincomponents/Changepassword';
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/student/view/academicdata" element={<ViewStudentAcademic />} />
         <Route path="/student/view/otherdata" element={<ViewStudentOther />} />
         <Route path="/student/edit/personaldata" element={<EditStudentPersonal />} />
+        <Route path="/student/edit/otherdata" element={<EditStudentOther />} />
         <Route path="/changepassword" element={<Changepassword/>}/>
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

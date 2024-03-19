@@ -113,19 +113,18 @@ CREATE TABLE Events (
     FOREIGN KEY (roll_number) REFERENCES Students(RollNumber)
 );
 
----other details end
----created above  
+---other details end  
 ---academic data
 
 CREATE TABLE Subjects (
     SubjectID VARCHAR(50) PRIMARY KEY,
     SubjectName VARCHAR(50),
     Type ENUM('core', 'elective', 'optional') NOT NULL,
-    Semester INT,
+    Semester INT
 );
 CREATE TABLE TeacherSubjects (
-    TeacherID INT,
-    SubjectID INT,
+    TeacherID varchar(50),
+    SubjectID varchar(50),
     PRIMARY KEY (TeacherID, SubjectID),
     FOREIGN KEY (TeacherID) REFERENCES Teachers(TeacherID),
     FOREIGN KEY (SubjectID) REFERENCES Subjects(SubjectID)
@@ -133,7 +132,7 @@ CREATE TABLE TeacherSubjects (
 
 CREATE TABLE Marks (
     RollNumber INT,
-    SubjectID INT,
+    SubjectID varchar(50),
     Semester INT,
     MarksObtained INT,
     PRIMARY KEY (RollNumber, SubjectID, Semester),
@@ -149,3 +148,4 @@ CREATE TABLE student_academic_details (
     FOREIGN KEY (RollNumber) REFERENCES Students(RollNumber)
 );
 --academic data ends
+--created all

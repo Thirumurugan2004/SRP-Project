@@ -1,4 +1,4 @@
-In otherdata make support for multiple interns,scholarship etc..
+Edit for other data
 Create subjects table and populate it
 Teachers and HOD page
 Analytics-1
