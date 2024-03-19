@@ -211,7 +211,7 @@ app.get('/ExamsDetails/:username', (req, res) => {
       if (err) {
           throw err;
       }
-      res.json(result[0]); 
+      res.json(result); 
   });
 });
 
