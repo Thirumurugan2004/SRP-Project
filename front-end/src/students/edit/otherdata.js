@@ -11,7 +11,12 @@ function EditStudentOther() {
     const [papers, setPapers] = useState(null);
     const [events, setEvents] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
+    const [addScholarship,setaddScholarship] = useState(false);
     const userRef = useRef(null);
+    const [scholarshipdata, setScholarshipdata]=useState({
+        ScholarshipProvider:'',
+        amount:''
+    });
 
     useEffect(() => {
         axios.get('http://localhost:5000/session')
@@ -103,48 +108,121 @@ function EditStudentOther() {
     }, []);
 
     const handleDeleteInternship = (id) => {
-        // Delete Internship entry with given id
-        // Implement your delete logic here
+        const apiUrl = `http://localhost:5000/deleteInternship/${id}`;
+
+        axios.delete(apiUrl)
+            .then(response => {
+                console.log("Internship record with id", id, "deleted successfully.");
+                window.location.reload();
+            })
+            .catch(error => {
+                console.error("Error deleting Internship record:", error);
+            });
+    
     };
 
     const handleDeleteScholarship = (id) => {
-        // Delete Scholarship entry with given id
-        // Implement your delete logic here
-    };
+        const apiUrl = `http://localhost:5000/deleteScholarship/${id}`;
 
+        axios.delete(apiUrl)
+            .then(response => {
+                console.log("Scholarship record with id", id, "deleted successfully.");
+                window.location.reload();
+            })
+            .catch(error => {
+                console.error("Error deleting scholarship record:", error);
+            });
+    };
+    const handleDeleteProject = (id) => {
+        const apiUrl = `http://localhost:5000/deleteProject/${id}`;
+
+        axios.delete(apiUrl)
+            .then(response => {
+                console.log("Project record with id", id, "deleted successfully.");
+                window.location.reload();
+            })
+            .catch(error => {
+                console.error("Error deleting Project record:", error);
+            });
+    };
+    const handleDeleteSports = (id) => {
+        const apiUrl = `http://localhost:5000/deleteSports/${id}`;
+
+        axios.delete(apiUrl)
+            .then(response => {
+                console.log("Sports record with id", id, "deleted successfully.");
+                window.location.reload();
+            })
+            .catch(error => {
+                console.error("Error deleting Sports record:", error);
+            });
+    };
+    const handleDeletePapers = (id) => {
+        const apiUrl = `http://localhost:5000/deletePapers/${id}`;
+
+        axios.delete(apiUrl)
+            .then(response => {
+                console.log("Papers record with id", id, "deleted successfully.");
+                window.location.reload();
+            })
+            .catch(error => {
+                console.error("Error deleting Papers record:", error);
+            });
+    };
+    const handleDeleteEvents = (id) => {
+        const apiUrl = `http://localhost:5000/deleteEvents/${id}`;
+
+        axios.delete(apiUrl)
+            .then(response => {
+                console.log("Events record with id", id, "deleted successfully.");
+                window.location.reload();
+            })
+            .catch(error => {
+                console.error("Error deleting Events record:", error);
+            });
+    };
     const handleAddInternship = () => {
         // Add new Internship entry
         // Implement your add logic here
     };
 
-    const handleAddScholarship = () => {
-        // Add new Scholarship entry
-        // Implement your add logic here
+    const handleAddScholarship = async () => {
+        try {
+            const apiUrl = `http://localhost:5000/addScholarship/${userRef.current}`; // Replace with your API endpoint
+            const response = await axios.post(apiUrl, scholarshipdata);
+            alert('Scholarship data added successfully');
+            console.log('Response from API:', response.data);
+            window.location.reload();
+        } catch (error) {
+            console.error('Error adding scholarship data:', error.response.data);
+            alert('Failed to add scholarship data');
+        }
+    };
+    const handleInputChangescholarship = (event) => {
+        const { name, value } = event.target;
+        setScholarshipdata(prevData => ({
+            ...prevData,
+            [name]: value
+        }));
+        // setScholarshipdata({ ...scholarshipdata, [name]: value });
     };
 const handleAddProject = () => {
 
 };
-const handleDeleteProject = () => {
 
-};
 const handleAddSports = () => {
 
 };
-const handleDeleteSports = () => {
 
-};
 const handleAddPapers = () => {
 
 };
-const handleDeletePapers = () => {
 
-};
 const handleAddEvents = () => {
 
 };
-const handleDeleteEvents = () => {
 
-};
+
     return (
         <>
             <Navbarfun />
@@ -160,11 +238,12 @@ const handleDeleteEvents = () => {
         <p className='view-field'><strong>Internship StartDate:</strong> {internship.internship_start_date}</p>
         <p className='view-field'><strong>Internship EndDate:</strong> {internship.internship_end_date}</p>
         <p className='view-field'><strong>Product/Service Based :</strong> {internship.product_service_based}</p>
-        <button onClick={() => handleDeleteInternship(internship.id)}>Delete</button>
+        <button onClick={() => handleDeleteInternship(index)}>Delete</button>
     </div>
 ))}
             <button onClick={handleAddInternship}>Add Internship</button>
-            
+
+
             {!scholarships&&<h3>No Scholarshp details found</h3>}
 {scholarships && scholarships.map((Scholarship, index) => (
     <div className='view-form' key={index}>
@@ -174,7 +253,12 @@ const handleDeleteEvents = () => {
         <button onClick={() => handleDeleteScholarship(Scholarship.id)}>Delete</button>
     </div>
 ))}
-            <button onClick={handleAddScholarship}>Add Scholarship</button>
+            <button onClick={()=>setaddScholarship(!addScholarship)}>Add Scholarship</button>
+{addScholarship && <div>
+    Scholarship Provider<input type='text' name='ScholarshipProvider' value={scholarshipdata.ScholarshipProvider} onChange={handleInputChangescholarship} required></input>
+    Amount<input type='text' name='amount' value={scholarshipdata.amount} onChange={handleInputChangescholarship}required></input>
+    <button onClick={handleAddScholarship}></button>
+    </div>}
 
 
             {projects && projects.map((Project, index) => (
@@ -188,6 +272,8 @@ const handleDeleteEvents = () => {
             ))}
             <button onClick={handleAddProject}>Add Project</button>
             
+
+
             {sports && sports.map((sport, index) => (
     <div className='view-form' key={index}>
         <h2>Sports Details {index + 1}</h2>
@@ -198,6 +284,9 @@ const handleDeleteEvents = () => {
 ))}
             <button onClick={handleAddSports}>Add Sports</button>
             {!sports &&<h3>No sports details found</h3>}
+
+
+
             {exams && (
     <div className='view-form'>
         <h2>Exams Attended</h2>
@@ -210,6 +299,8 @@ const handleDeleteEvents = () => {
     </div>
 )}
             {!exams &&<h3>No exam details found</h3>}
+
+
 
              
        {papers && papers.map((paper, index) => (
@@ -225,6 +316,10 @@ const handleDeleteEvents = () => {
     ))}
     <button onClick={handleAddPapers}>Add Papers</button>
             {!papers &&<h3>No paper details found</h3>}
+
+
+
+
             {events && events.map((event, index) => (
     <div className='view-form' key={index}>
         <h2>Events Details {index + 1}</h2>

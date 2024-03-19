@@ -38,7 +38,7 @@ db.connect((err) => {
 app.use(bodyParser.json());
 app.use(cors({
   origin: 'http://localhost:3000', 
-  methods:["POST","GET","PUT"],
+  methods:["POST","GET","PUT","DELETE"],
   credentials: true 
 }));
 
@@ -321,6 +321,89 @@ app.post('/changePassword/:username', (req, res) => {
       console.log('Wrong old password');
       res.status(400).json({ error: 'Wrong old password' });
     }
+  });
+});
+
+app.delete('/deleteScholarship/:id', (req, res) => {
+  const id = req.params.id;
+  const sql = 'DELETE FROM Scholarship WHERE id =?';
+  db.query(sql, [id], (err, result) => {
+      if (err) {
+          throw err;
+      }
+      res.send('Scholarship deleted successfully');
+  });
+})
+
+app.delete('/deleteInternship/:id', (req, res) => {
+  const id = req.params.id;
+  const sql = 'DELETE FROM Internship WHERE id =?';
+  db.query(sql, [id], (err, result) => {
+      if (err) {
+          throw err;
+      }
+      res.send('Internship deleted successfully');
+  });
+})
+
+app.delete('/deleteProject/:id', (req, res) => {
+  const id = req.params.id;
+  const sql = 'DELETE FROM Project WHERE id =?';
+  db.query(sql, [id], (err, result) => {
+      if (err) {
+          throw err;
+      }
+      res.send('Project deleted successfully');
+  });
+})
+
+app.delete('/deleteSports/:id', (req, res) => {
+  const id = req.params.id;
+  const sql = 'DELETE FROM Sports WHERE id =?';
+  db.query(sql, [id], (err, result) => {
+      if (err) {
+          throw err;
+      }
+      res.send('Sports deleted successfully');
+  });
+})
+
+app.delete('/deletePapers/:id', (req, res) => {
+  const id = req.params.id;
+  const sql = 'DELETE FROM paper_published WHERE id =?';
+  db.query(sql, [id], (err, result) => {
+      if (err) {
+          throw err;
+      }
+      res.send('Papers deleted successfully');
+  });
+})
+
+app.delete('/deleteEvents/:id', (req, res) => {
+  const id = req.params.id;
+  const sql = 'DELETE FROM Events WHERE id =?';
+  db.query(sql, [id], (err, result) => {
+      if (err) {
+          throw err;
+      }
+      res.send('Events deleted successfully');
+  });
+})
+
+
+app.post('/addScholarship/:roll_number', (req, res) => {
+  const {roll_number}=req.params;
+  const scholarshipData = req.body;
+  // Insert scholarship data into MySQL table
+  const sql = 'INSERT INTO Scholarship (roll_number,ScholarshipProvider, amount) VALUES (?,?, ?)';
+  db.query(sql, [roll_number,scholarshipData.ScholarshipProvider, scholarshipData.amount], (err, result) => {
+      if (err) {
+          console.error('Error adding scholarship data:', err);
+          res.status(500).json({ error: 'Failed to add scholarship data to database' });
+      } else {
+          console.log('Scholarship data added successfully');
+          res.status(200).json({ message: 'Scholarship data added successfully' });
+      }
   });
 });
 
