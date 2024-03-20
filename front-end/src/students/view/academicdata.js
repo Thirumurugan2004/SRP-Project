@@ -5,6 +5,7 @@ import Navbarfun from '../../usercomponents/Navbarfun';
 function ViewStudentAcademic(){
     return(
         <>
+        <Navbarfun/>
         <h1>ViewStudentAcademic</h1>
         </>
     )

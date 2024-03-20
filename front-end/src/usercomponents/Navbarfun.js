@@ -10,7 +10,7 @@ function Navbarfun() {
     const [clicked, setClicked] = useState(false);
     const navigate = useNavigate(); // Get access to history object
     const location = useLocation(); // Get access to location object
-
+    axios.defaults.withCredentials = true; 
     const handleLogout = async () => {
         try {
             const response = await axios.get('http://localhost:5000/logout', {
@@ -57,7 +57,12 @@ function Navbarfun() {
                                     <NavDropdown.Item onClick={() => handleRedirect(`${basePath}/edit/otherdata`)}>Other Data</NavDropdown.Item>
                                 </NavDropdown>
                                 <Nav.Link onClick={() => handleRedirect(`${basePath}/analytics`)}>Analytics</Nav.Link>
-                                <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+                                <NavDropdown title="Profile" id="collasible-nav-dropdown">
+                                    <NavDropdown.Item onClick={() => handleRedirect(`/student`)}>Home</NavDropdown.Item>
+                                    <NavDropdown.Item onClick={() => handleRedirect(`/changepassword`)}>Change Password</NavDropdown.Item>
+                                    <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
+                                </NavDropdown>
+                                
                             </Nav>
                         </Navbar.Collapse>
                     </Container>
