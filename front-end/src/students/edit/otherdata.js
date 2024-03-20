@@ -10,12 +10,53 @@ function EditStudentOther() {
     const [exams, setExams] = useState(null);
     const [papers, setPapers] = useState(null);
     const [events, setEvents] = useState(null);
+
     const [errorMessage, setErrorMessage] = useState('');
     const [addScholarship,setaddScholarship] = useState(false);
+    const [addinternship,setaddinternship] = useState(false);
+    const [addproject,setaddproject] = useState(false);
+    const [addsport,setaddsport] = useState(false);
+    const [addexam,setaddexam] = useState(false);
+    const [paper,setpaper] = useState(false);
+    const [event,setevent] = useState(false);
+
     const userRef = useRef(null);
+
     const [scholarshipdata, setScholarshipdata]=useState({
         ScholarshipProvider:'',
         amount:''
+    });
+ const [internshipdata, setinternshipdata] = useState({
+        employer_name: '',
+        on_off_campus: '',
+        ctc: '',
+        internship_duration: '',
+        internship_start_date: '',
+        internship_end_date: '',
+        product_service_based: ''
+    });
+    const [projectdata, setprojectdata] = useState({
+        title: '',
+        guide:'',
+        project_desc:''
+    });
+    const [sportdata, setsportdata] = useState({
+        event_name: '',
+        award:''
+    });
+    const  [paperdata, setpaperdata] = useState({
+        title: '',
+        journal:'',
+        date_year: '',
+        DOI_link: ''
+    });
+
+    const [eventdata, setEventdata] = useState({
+        event_name: '',
+        institution:'',
+        date:'',
+        role: '',
+        awards:''
     });
 
     useEffect(() => {
@@ -206,8 +247,25 @@ function EditStudentOther() {
         }));
         // setScholarshipdata({ ...scholarshipdata, [name]: value });
     };
-const handleAddProject = () => {
-
+       const handleInputChangeproject = (event) => {
+        const { name, value } = event.target;
+        setprojectdata(prevData => ({
+            ...prevData,
+            [name]: value
+        }));
+    }
+const handleAddProject = async() => {
+    console.log("project data",projectdata.title);
+    try {
+        const apiUrl = `http://localhost:5000/addProject/${userRef.current}`; // Replace with your API endpoint
+        const response = await axios.post(apiUrl, projectdata);
+        alert('Project data added successfully');
+        console.log('Response from API:', response.data);
+        window.location.reload();
+    } catch (error) {
+        console.error('Error adding Project data:', error.response.data);
+        alert('Failed to add Project data');
+    }
 };
 
 const handleAddSports = () => {
@@ -254,10 +312,11 @@ const handleAddEvents = () => {
     </div>
 ))}
             <button onClick={()=>setaddScholarship(!addScholarship)}>Add Scholarship</button>
+
 {addScholarship && <div>
     Scholarship Provider<input type='text' name='ScholarshipProvider' value={scholarshipdata.ScholarshipProvider} onChange={handleInputChangescholarship} required></input>
     Amount<input type='text' name='amount' value={scholarshipdata.amount} onChange={handleInputChangescholarship}required></input>
-    <button onClick={handleAddScholarship}></button>
+    <button onClick={handleAddScholarship}>Submit</button>
     </div>}
 
 
@@ -270,8 +329,13 @@ const handleAddEvents = () => {
                     <button onClick={() => handleDeleteProject(Project.id)}>Delete</button>
                 </div>
             ))}
-            <button onClick={handleAddProject}>Add Project</button>
-            
+            <button onClick={()=>setaddproject(!addproject)}>Add Project</button>
+            {addproject &&<div>
+                Title:<input type="text" name='title' value={projectdata.title} onChange={handleInputChangeproject}></input>
+                Guide:<input type="text" name='guide' value={projectdata.guide} onChange={handleInputChangeproject}></input>
+                Description:<input type="textbox" name='project_desc' value={projectdata.project_desc} onChange={handleInputChangeproject}></input>
+                <button onClick={handleAddProject}>Submit</button>
+                </div>}
 
 
             {sports && sports.map((sport, index) => (

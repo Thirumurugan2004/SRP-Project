@@ -394,7 +394,6 @@ app.delete('/deleteEvents/:id', (req, res) => {
 app.post('/addScholarship/:roll_number', (req, res) => {
   const {roll_number}=req.params;
   const scholarshipData = req.body;
-  // Insert scholarship data into MySQL table
   const sql = 'INSERT INTO Scholarship (roll_number,ScholarshipProvider, amount) VALUES (?,?, ?)';
   db.query(sql, [roll_number,scholarshipData.ScholarshipProvider, scholarshipData.amount], (err, result) => {
       if (err) {
@@ -403,6 +402,21 @@ app.post('/addScholarship/:roll_number', (req, res) => {
       } else {
           console.log('Scholarship data added successfully');
           res.status(200).json({ message: 'Scholarship data added successfully' });
+      }
+  });
+});
+
+app.post('/addProject/:roll_number', (req, res) => {
+  const {roll_number}=req.params;
+  const projectData = req.body;
+  const sql = 'INSERT INTO project (roll_number,title,guide,project_desc) VALUES (?,?, ?,?)';
+  db.query(sql, [roll_number,projectData.title,projectData.guide,projectData.project_desc], (err, result) => {
+      if (err) {
+          console.error('Error adding Project data:', err);
+          res.status(500).json({ error: 'Failed to add Project  data to database' });
+      } else {
+          console.log('Project data added successfully');
+          res.status(200).json({ message: 'Project  data added successfully' });
       }
   });
 });
