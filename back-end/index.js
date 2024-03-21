@@ -394,7 +394,6 @@ app.delete('/deleteEvents/:id', (req, res) => {
 app.post('/addScholarship/:roll_number', (req, res) => {
   const {roll_number}=req.params;
   const scholarshipData = req.body;
-  // Insert scholarship data into MySQL table
   const sql = 'INSERT INTO Scholarship (roll_number,ScholarshipProvider, amount) VALUES (?,?, ?)';
   db.query(sql, [roll_number,scholarshipData.ScholarshipProvider, scholarshipData.amount], (err, result) => {
       if (err) {
@@ -404,6 +403,81 @@ app.post('/addScholarship/:roll_number', (req, res) => {
           console.log('Scholarship data added successfully');
           res.status(200).json({ message: 'Scholarship data added successfully' });
       }
+  });
+});
+
+app.post('/addProject/:roll_number', (req, res) => {
+  const {roll_number}=req.params;
+  const projectData = req.body;
+  const sql = 'INSERT INTO project (roll_number,title,guide,project_desc) VALUES (?,?, ?,?)';
+  db.query(sql, [roll_number,projectData.title,projectData.guide,projectData.project_desc], (err, result) => {
+      if (err) {
+          console.error('Error adding Project data:', err);
+          res.status(500).json({ error: 'Failed to add Project  data to database' });
+      } else {
+          console.log('Project data added successfully');
+          res.status(200).json({ message: 'Project  data added successfully' });
+      }
+  });
+});
+
+app.post('/addInternship/:roll_number', (req, res) => {
+  const { roll_number } = req.params;
+  const internshipData = req.body;
+  const sql = 'INSERT INTO Internship (roll_number, employer_name, on_off_campus, ctc, InternshipDuration, InternshipStartDate, InternshipEndDate, product_service_based) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+  db.query(sql, [roll_number, internshipData.employer_name, internshipData.on_off_campus, internshipData.ctc, internshipData.InternshipDuration, internshipData.InternshipStartDate, internshipData.InternshipEndDate, internshipData.product_service_based], (err, result) => {
+    if (err) {
+      console.error('Error adding Internship data:', err);
+      res.status(500).json({ error: 'Failed to add Internship data to database' });
+    } else {
+      console.log('Internship data added successfully');
+      res.status(200).json({ message: 'Internship data added successfully' });
+    }
+  });
+});
+app.post('/addSport/:roll_number', (req, res) => {
+  const { roll_number } = req.params;
+  const sportsData = req.body;
+  const sql = 'INSERT INTO Sports (roll_number, event_name, award) VALUES (?, ?, ?)';
+  db.query(sql, [roll_number, sportsData.event_name, sportsData.award], (err, result) => {
+    if (err) {
+      console.error('Error adding Sports data:', err);
+      res.status(500).json({ error: 'Failed to add Sports data to database' });
+    } else {
+      console.log('Sports data added successfully');
+      res.status(200).json({ message: 'Sports data added successfully' });
+    }
+  });
+});
+
+app.post('/addPaper/:roll_number', (req, res) => {
+  console.log('addpaper');
+  const { roll_number } = req.params;
+  const paperData = req.body;
+  const sql = 'INSERT INTO Paper_Published (roll_number, title, journal, date_year, DOI_link) VALUES (?, ?, ?, ?, ?)';
+  db.query(sql, [roll_number, paperData.title, paperData.journal, paperData.date_year, paperData.DOI_link], (err, result) => {
+    if (err) {
+      console.error('Error adding Paper Published data:', err);
+      res.status(500).json({ error: 'Failed to add Paper Published data to database' });
+    } else {
+      console.log('Paper Published data added successfully');
+      res.status(200).json({ message: 'Paper Published data added successfully' });
+    }
+  });
+});
+
+app.post('/addEvent/:roll_number', (req, res) => {
+  const { roll_number } = req.params;
+  const eventData = req.body;
+  const sql = 'INSERT INTO Events (roll_number, event_name, institution, date, role, awards) VALUES (?, ?, ?, ?, ?, ?)';
+  db.query(sql, [roll_number, eventData.event_name, eventData.institution, eventData.date, eventData.role, eventData.awards], (err, result) => {
+    if (err) {
+      console.error('Error adding Event data:', err);
+      res.status(500).json({ error: 'Failed to add Event data to database' });
+    } else {
+      console.log('Event data added successfully');
+      res.status(200).json({ message: 'Event data added successfully' });
+    }
   });
 });
 

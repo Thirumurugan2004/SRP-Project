@@ -10,12 +10,53 @@ function EditStudentOther() {
     const [exams, setExams] = useState(null);
     const [papers, setPapers] = useState(null);
     const [events, setEvents] = useState(null);
+
     const [errorMessage, setErrorMessage] = useState('');
     const [addScholarship,setaddScholarship] = useState(false);
+    const [addinternship,setaddinternship] = useState(false);
+    const [addproject,setaddproject] = useState(false);
+    const [addsport,setaddsport] = useState(false);
+    const [addexam,setaddexam] = useState(false);
+    const [addpaper,setaddpaper] = useState(false);
+    const [addevent,setaddevent] = useState(false);
+
     const userRef = useRef(null);
+
     const [scholarshipdata, setScholarshipdata]=useState({
         ScholarshipProvider:'',
         amount:''
+    });
+ const [internshipdata, setinternshipdata] = useState({
+        employer_name: '',
+        on_off_campus: '',
+        ctc: '',
+        internship_duration: '',
+        internship_start_date: '',
+        internship_end_date: '',
+        product_service_based: ''
+    });
+    const [projectdata, setprojectdata] = useState({
+        title: '',
+        guide:'',
+        project_desc:''
+    });
+    const [sportdata, setsportdata] = useState({
+        event_name: '',
+        award:''
+    });
+    const  [paperdata, setpaperdata] = useState({
+        title: '',
+        journal:'',
+        date_year: '',
+        DOI_link: ''
+    });
+
+    const [eventdata, setEventdata] = useState({
+        event_name: '',
+        institution:'',
+        date:'',
+        role: '',
+        awards:''
     });
 
     useEffect(() => {
@@ -181,9 +222,60 @@ function EditStudentOther() {
                 console.error("Error deleting Events record:", error);
             });
     };
-    const handleAddInternship = () => {
-        // Add new Internship entry
-        // Implement your add logic here
+    const handleInputChangescholarship = (event) => {
+        const { name, value } = event.target;
+        setScholarshipdata(prevData => ({
+            ...prevData,
+            [name]: value
+        }));
+    };
+       const handleInputChangeproject = (event) => {
+        const { name, value } = event.target;
+        setprojectdata(prevData => ({
+            ...prevData,
+            [name]: value
+        }));
+    }
+    const handleInputChangesport = (event) => {
+        const { name, value } = event.target;
+        setsportdata(prevData => ({
+            ...prevData,
+            [name]: value
+        }));
+    }
+    const handleInputChangepaper = (event) => {
+        const { name, value } = event.target;
+        setpaperdata(prevData => ({
+          ...prevData,
+            [name]: value
+        }));
+    }
+    const handleInputChangeEvent = (event) => {
+        const { name, value } = event.target;
+        setEventdata(prevData => ({
+          ...prevData,
+            [name]: value
+        }));
+    };
+    const handleInputChangeInternship = (event) => {
+        const { name, value } = event.target;
+        setinternshipdata(prevData => ({
+        ...prevData,
+            [name]: value
+        }));
+    };
+
+    const handleAddInternship = async() => {
+        try {
+            const apiUrl = `http://localhost:5000/addInternship/${userRef.current}`; // Replace with your API endpoint
+            const response = await axios.post(apiUrl, internshipdata);
+            alert('Internship data added successfully');
+            console.log('Response from API:', response.data);
+            window.location.reload();
+        } catch (error) {
+            console.error('Error adding Internship data:', error.response.data);
+            alert('Failed to add Internship data');
+        }
     };
 
     const handleAddScholarship = async () => {
@@ -198,28 +290,58 @@ function EditStudentOther() {
             alert('Failed to add scholarship data');
         }
     };
-    const handleInputChangescholarship = (event) => {
-        const { name, value } = event.target;
-        setScholarshipdata(prevData => ({
-            ...prevData,
-            [name]: value
-        }));
-        // setScholarshipdata({ ...scholarshipdata, [name]: value });
-    };
-const handleAddProject = () => {
-
+  
+const handleAddProject = async() => {
+    try {
+        const apiUrl = `http://localhost:5000/addProject/${userRef.current}`; // Replace with your API endpoint
+        const response = await axios.post(apiUrl, projectdata);
+        alert('Project data added successfully');
+        console.log('Response from API:', response.data);
+        window.location.reload();
+    } catch (error) {
+        console.error('Error adding Project data:', error.response.data);
+        alert('Failed to add Project data');
+    }
 };
 
-const handleAddSports = () => {
-
+const handleAddSports = async() => {
+    try {
+        const apiUrl = `http://localhost:5000/addSport/${userRef.current}`; // Replace with your API endpoint
+        const response = await axios.post(apiUrl, sportdata);
+        alert('Sports data added successfully');
+        console.log('Response from API:', response.data);
+        window.location.reload();
+    } catch (error) {
+        console.error('Error adding Sports data:', error.response.data);
+        alert('Failed to add Sports data');
+    }
 };
 
-const handleAddPapers = () => {
-
+const handleAddPapers = async() => {
+    console.log('add papers');
+    try {
+        const apiUrl = `http://localhost:5000/addPaper/${userRef.current}`; // Replace with your API endpoint
+        const response = await axios.post(apiUrl, paperdata);
+        alert('Papers data added successfully');
+        console.log('Response from API:', response.data);
+        window.location.reload();
+    } catch (error) {
+        console.error('Error adding Papers data:', error.response.data);
+        alert('Failed to add Papers data');
+    }
 };
 
-const handleAddEvents = () => {
-
+const handleAddEvents = async() => {
+    try {
+        const apiUrl = `http://localhost:5000/addEvent/${userRef.current}`; // Replace with your API endpoint
+        const response = await axios.post(apiUrl, eventdata);
+        alert('Events data added successfully');
+        console.log('Response from API:', response.data);
+        window.location.reload();
+    } catch (error) {
+        console.error('Error adding Events data:', error.response.data);
+        alert('Failed to add Events data');
+    }
 };
 
 
@@ -241,7 +363,19 @@ const handleAddEvents = () => {
         <button onClick={() => handleDeleteInternship(index)}>Delete</button>
     </div>
 ))}
-            <button onClick={handleAddInternship}>Add Internship</button>
+            <button onClick={()=>setaddinternship(!addinternship)}>Add Internship</button>
+            {addinternship && (
+  <div>
+    Employer Name:<input type="text" name='employer_name' value={internshipdata.employer_name} onChange={handleInputChangeInternship} required></input>
+    On/Off Campus:<input type="text" name='on_off_campus' value={internshipdata.on_off_campus} onChange={handleInputChangeInternship} required></input>
+    CTC:<input type="number" name='ctc' value={internshipdata.ctc} onChange={handleInputChangeInternship}></input>
+    Duration:<input type="text" name='InternshipDuration' value={internshipdata.InternshipDuration} onChange={handleInputChangeInternship} required></input>
+    Start Date:<input type="date" name='InternshipStartDate' value={internshipdata.InternshipStartDate} onChange={handleInputChangeInternship} required></input>
+    End Date:<input type="date" name='InternshipEndDate' value={internshipdata.InternshipEndDate} onChange={handleInputChangeInternship} required></input>
+    Product/Service Based:<input type="text" name='product_service_based' value={internshipdata.product_service_based} onChange={handleInputChangeInternship} required></input>
+    <button onClick={handleAddInternship}>Submit</button>
+  </div>
+)}
 
 
             {!scholarships&&<h3>No Scholarshp details found</h3>}
@@ -254,10 +388,11 @@ const handleAddEvents = () => {
     </div>
 ))}
             <button onClick={()=>setaddScholarship(!addScholarship)}>Add Scholarship</button>
+
 {addScholarship && <div>
     Scholarship Provider<input type='text' name='ScholarshipProvider' value={scholarshipdata.ScholarshipProvider} onChange={handleInputChangescholarship} required></input>
-    Amount<input type='text' name='amount' value={scholarshipdata.amount} onChange={handleInputChangescholarship}required></input>
-    <button onClick={handleAddScholarship}></button>
+    Amount<input type='text' name='amount' value={scholarshipdata.amount} onChange={handleInputChangescholarship} required></input>
+    <button onClick={handleAddScholarship}>Submit</button>
     </div>}
 
 
@@ -270,8 +405,13 @@ const handleAddEvents = () => {
                     <button onClick={() => handleDeleteProject(Project.id)}>Delete</button>
                 </div>
             ))}
-            <button onClick={handleAddProject}>Add Project</button>
-            
+            <button onClick={()=>setaddproject(!addproject)}>Add Project</button>
+            {addproject &&<div>
+                Title:<input type="text" name='title' value={projectdata.title} onChange={handleInputChangeproject} required></input>
+                Guide:<input type="text" name='guide' value={projectdata.guide} onChange={handleInputChangeproject} required></input>
+                Description:<input type="textbox" name='project_desc' value={projectdata.project_desc} onChange={handleInputChangeproject} required></input>
+                <button onClick={handleAddProject}>Submit</button>
+                </div>}
 
 
             {sports && sports.map((sport, index) => (
@@ -282,8 +422,15 @@ const handleAddEvents = () => {
         <button onClick={() => handleDeleteSports(sport.id)}>Delete</button>
     </div>
 ))}
-            <button onClick={handleAddSports}>Add Sports</button>
+            <button onClick={()=>setaddsport(!addsport)}>Add Sports</button>
             {!sports &&<h3>No sports details found</h3>}
+            {addsport && (
+  <div>
+    Event Name:<input type="text" name='event_name' value={sportdata.event_name} onChange={handleInputChangesport} required></input>
+    Award:<input type="text" name='award' value={sportdata.award} onChange={handleInputChangesport} required></input>
+    <button onClick={handleAddSports}>Submit</button>
+  </div>
+)}
 
 
 
@@ -314,9 +461,18 @@ const handleAddEvents = () => {
       
         </div>
     ))}
-    <button onClick={handleAddPapers}>Add Papers</button>
+    <button onClick={()=>setaddpaper(!addpaper)}>Add Papers</button>
             {!papers &&<h3>No paper details found</h3>}
 
+            {addpaper && (
+  <div>
+    Title:<input type="text" name='title' value={paperdata.title} onChange={handleInputChangepaper} required></input>
+    Journal:<input type="text" name='journal' value={paperdata.journal} onChange={handleInputChangepaper} required></input>
+    Date Year:<input type="date" name='date_year' value={paperdata.date_year} onChange={handleInputChangepaper} required></input>
+    DOI Link:<input type="text" name='DOI_link' value={paperdata.DOI_link} onChange={handleInputChangepaper} required></input>
+    <button onClick={handleAddPapers}>Submit</button>
+  </div>
+)}
 
 
 
@@ -332,7 +488,18 @@ const handleAddEvents = () => {
   
     </div>
 ))}
-            <button onClick={handleAddEvents}>Add Events</button>
+            <button onClick={()=>setaddevent(!addevent)}>Add Events</button>
+            {addevent && (
+  <div>
+    Event Name:<input type="text" name='event_name' value={eventdata.event_name} onChange={handleInputChangeEvent} required></input>
+    Institution:<input type="text" name='institution' value={eventdata.institution} onChange={handleInputChangeEvent} required></input>
+    Date:<input type="date" name='date' value={eventdata.date} onChange={handleInputChangeEvent} required></input>
+    Role:<input type="text" name='role' value={eventdata.role} onChange={handleInputChangeEvent} required></input>
+    Awards:<input type="text" name='awards' value={eventdata.awards} onChange={handleInputChangeEvent} required></input>
+    <button onClick={handleAddEvents}>Submit</button>
+  </div>
+)}
+
                 {!events &&<h3>No events details found</h3>}
 
         </>
