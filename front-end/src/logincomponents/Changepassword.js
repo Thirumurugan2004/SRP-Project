@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Navbarfun from '../usercomponents/Navbarfun';
-
+import '../CSS/change_pass.css'
 function Changepassword() {
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
@@ -48,11 +48,20 @@ function Changepassword() {
 
     return (
         <>
-            <Navbarfun />
-            <h1>Change Password</h1>
-            oldPassword<input type="text" name="oldPassword" value={loginDetails.oldPassword} onChange={handleChange}/><br/>
-            newPassword<input type="text" name="newPassword" value={loginDetails.newPassword} onChange={handleChange}/>
-            <button onClick={handleChangePassword}>Change Password</button>
+        <Navbarfun/>
+           <div className='change_pass_container'>
+    <div className='change_pass_border'>
+        
+        <h1>Change Password</h1>
+        <div className='change_pass_label'>
+            oldPassword : <input type="text" name="oldPassword" value={loginDetails.oldPassword} onChange={handleChange}/>
+        </div>
+        <div className='change_pass_label'>
+            newPassword : <input type="text" name="newPassword" value={loginDetails.newPassword} onChange={handleChange}/>
+        </div>
+        <button className="change_pass_button" onClick={handleChangePassword}>Change Password</button>
+    </div>
+</div>
         </>
     );
 }

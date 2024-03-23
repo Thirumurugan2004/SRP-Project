@@ -63,7 +63,7 @@ var fetchedUsername;
     const handleChange = (e) => {
         const { name, value } = e.target;
         setStudentData(prevData => ({
-            ...prevData,
+                ...prevData,
             [name]: value
         }));
     };
@@ -151,7 +151,8 @@ axios.post(`http://localhost:5000/upload/${studentData.RollNumber}`,formdata)
                         <input className='edit-input' type="text" name="Motheroccupation" value={studentData.Motheroccupation} onChange={handleChange} />
                    <br/>
                    <input type="file" onChange={handleFile}></input>
-                    <br/><button type="submit" onClick={handleUpload}>Submit</button>
+                    <br/><button  onClick={handleUpload}>Upload</button>
+                    <br/><button type="submit" >Submit</button>
                 </form>
                 {successMessage && <div className="success-message">{successMessage}</div>}
             </div>

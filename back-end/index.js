@@ -242,11 +242,13 @@ app.get('/EventDetails/:username', (req, res) => {
 app.put('/updateStudentDetails/:username', (req, res) => {
   const { username } = req.params;
   const updatedData = req.body;
-  const sql = 'UPDATE StudentDetails SET DateOfBirth = ?, Address = ?, Phone = ? WHERE RollNumber = ?';
-  db.query(sql, [updatedData.DateOfBirth, updatedData.Address, updatedData.Phone, username], (err, result) => {
+  console.log("data add",updatedData.FatherName);
+  const sql = 'UPDATE StudentDetails SET DateOfBirth = ?, Address = ?, Phone = ?,Sex=?,Blood_Group=?,FatherName=?,MotherName=?,Fatheroccupation=?,Motheroccupation=? WHERE RollNumber = ?';
+  db.query(sql, [updatedData.DateOfBirth, updatedData.Address, updatedData.Phone,updatedData.Sex,updatedData.Blood_Group,updatedData.FatherName,updatedData.Mothername,updatedData.Fatheroccupation,updatedData.Motheroccupation, username], (err, result) => {
       if (err) {
           throw err;
       }
+      console.log(result);
       res.send('Student details updated successfully');
   });
 });
@@ -478,6 +480,31 @@ app.post('/addEvent/:roll_number', (req, res) => {
       console.log('Event data added successfully');
       res.status(200).json({ message: 'Event data added successfully' });
     }
+  });
+});
+
+
+app.get('/basicacademic/:rollNumber', (req, res) => {
+  const rollNumber = req.params.rollNumber;
+
+  // SQL query to fetch student academic details based on RollNumber
+  const query = `SELECT * FROM student_academic_details WHERE RollNumber = ?`;
+
+  db.query(query, [rollNumber], (error, results) => {
+    if (error) {
+      console.error('Error executing query: ', error);
+      res.status(500).json({ error: 'Internal server error' });
+      return;
+    }
+
+    // Check if any results were returned
+    if (results.length === 0) {
+      res.status(404).json({ message: 'Student academic details not found' });
+      return;
+    }
+
+    // Send the fetched data
+    res.json(results[0]);
   });
 });
 
