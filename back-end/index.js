@@ -242,11 +242,13 @@ app.get('/EventDetails/:username', (req, res) => {
 app.put('/updateStudentDetails/:username', (req, res) => {
   const { username } = req.params;
   const updatedData = req.body;
-  const sql = 'UPDATE StudentDetails SET DateOfBirth = ?, Address = ?, Phone = ? WHERE RollNumber = ?';
-  db.query(sql, [updatedData.DateOfBirth, updatedData.Address, updatedData.Phone, username], (err, result) => {
+  console.log("data add",updatedData.FatherName);
+  const sql = 'UPDATE StudentDetails SET DateOfBirth = ?, Address = ?, Phone = ?,Sex=?,Blood_Group=?,FatherName=?,MotherName=?,Fatheroccupation=?,Motheroccupation=? WHERE RollNumber = ?';
+  db.query(sql, [updatedData.DateOfBirth, updatedData.Address, updatedData.Phone,updatedData.Sex,updatedData.Blood_Group,updatedData.FatherName,updatedData.Mothername,updatedData.Fatheroccupation,updatedData.Motheroccupation, username], (err, result) => {
       if (err) {
           throw err;
       }
+      console.log(result);
       res.send('Student details updated successfully');
   });
 });
@@ -481,6 +483,34 @@ app.post('/addEvent/:roll_number', (req, res) => {
   });
 });
 
+
+app.get('/basicacademic/:rollNumber', (req, res) => {
+  const rollNumber = req.params.rollNumber;
+  const query = `SELECT * FROM student_academic_details WHERE RollNumber = ?`;
+  db.query(query, [rollNumber], (error, results) => {
+    if (error) {
+      console.error('Error executing query: ', error);
+      res.status(500).json({ error: 'Internal server error' });
+      return;
+    }
+    if (results.length === 0) {
+      res.status(404).json({ message: 'Student academic details not found' });
+      return;
+    }
+    res.json(results[0]);
+  });
+});
+
+app.get('/getsemestermarks/:rollNumber/:sem', (req, res) => {
+  const semester = req.params.sem;
+  const rollNumber = req.params.rollNumber;
+  console.log(semester, rollNumber);
+  const query = `SELECT * FROM marks WHERE Semester = ? AND RollNumber = ?`;
+  db.query(query, [semester, rollNumber], (error, results) => {
+    if (error) throw error;
+    res.json(results);
+  });
+});
 
 app.get('/logout', (req, res) => {
   const username = req.session.username;

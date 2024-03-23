@@ -67,6 +67,7 @@ function EditStudentOther() {
                 axios.get(`http://localhost:5000/InternshipDetails/${userRef.current}`)
                     .then(response => {
                         setInternships(response.data);
+                        console.log('inernship data',internships);
                     })
                     .catch(error => {
                         console.error('Error fetching Internship details:', error);
@@ -356,9 +357,10 @@ const handleAddEvents = async() => {
         <p className='view-field'><strong>Employer:</strong> {internship.employer_name}</p>
         <p className='view-field'><strong>On/Off campus:</strong> {internship.on_off_campus}</p>
         <p className='view-field'><strong>CTC:</strong> {internship.ctc}</p>
-        <p className='view-field'><strong>Internship Duration:</strong> {internship.internship_duration}</p>
-        <p className='view-field'><strong>Internship StartDate:</strong> {internship.internship_start_date}</p>
-        <p className='view-field'><strong>Internship EndDate:</strong> {internship.internship_end_date}</p>
+        <p className='view-field'><strong>Internship Duration:</strong> {internship.InternshipDuration}</p>
+        <p className='view-field'><strong>Internship StartDate:</strong> {internship.InternshipStartDate}</p>
+        
+        <p className='view-field'><strong>Internship EndDate:</strong> {internship.InternshipEndDate}</p>
         <p className='view-field'><strong>Product/Service Based :</strong> {internship.product_service_based}</p>
         <button onClick={() => handleDeleteInternship(index)}>Delete</button>
     </div>
@@ -366,13 +368,13 @@ const handleAddEvents = async() => {
             <button onClick={()=>setaddinternship(!addinternship)}>Add Internship</button>
             {addinternship && (
   <div>
-    Employer Name:<input type="text" name='employer_name' value={internshipdata.employer_name} onChange={handleInputChangeInternship} required></input>
-    On/Off Campus:<input type="text" name='on_off_campus' value={internshipdata.on_off_campus} onChange={handleInputChangeInternship} required></input>
-    CTC:<input type="number" name='ctc' value={internshipdata.ctc} onChange={handleInputChangeInternship}></input>
-    Duration:<input type="text" name='InternshipDuration' value={internshipdata.InternshipDuration} onChange={handleInputChangeInternship} required></input>
-    Start Date:<input type="date" name='InternshipStartDate' value={internshipdata.InternshipStartDate} onChange={handleInputChangeInternship} required></input>
-    End Date:<input type="date" name='InternshipEndDate' value={internshipdata.InternshipEndDate} onChange={handleInputChangeInternship} required></input>
-    Product/Service Based:<input type="text" name='product_service_based' value={internshipdata.product_service_based} onChange={handleInputChangeInternship} required></input>
+    Employer Name:<input type="text" name='employer_name' value={internshipdata.employer_name} onChange={handleInputChangeInternship} required></input><br/>
+    On/Off Campus:<input type="text" name='on_off_campus' value={internshipdata.on_off_campus} onChange={handleInputChangeInternship} required></input><br/>
+    CTC:<input type="number" name='ctc' value={internshipdata.ctc} onChange={handleInputChangeInternship}></input><br/>
+    Duration:<input type="text" name='InternshipDuration' value={internshipdata.InternshipDuration} onChange={handleInputChangeInternship} required></input><br/>
+    Start Date:<input type="date" name='InternshipStartDate' value={internshipdata.InternshipStartDate} onChange={handleInputChangeInternship} required></input><br/>
+    End Date:<input type="date" name='InternshipEndDate' value={internshipdata.InternshipEndDate} onChange={handleInputChangeInternship} required></input><br/>
+    Product/Service Based:<input type="text" name='product_service_based' value={internshipdata.product_service_based} onChange={handleInputChangeInternship} required></input><br/>
     <button onClick={handleAddInternship}>Submit</button>
   </div>
 )}
@@ -390,8 +392,8 @@ const handleAddEvents = async() => {
             <button onClick={()=>setaddScholarship(!addScholarship)}>Add Scholarship</button>
 
 {addScholarship && <div>
-    Scholarship Provider<input type='text' name='ScholarshipProvider' value={scholarshipdata.ScholarshipProvider} onChange={handleInputChangescholarship} required></input>
-    Amount<input type='text' name='amount' value={scholarshipdata.amount} onChange={handleInputChangescholarship} required></input>
+    Scholarship Provider<input type='text' name='ScholarshipProvider' value={scholarshipdata.ScholarshipProvider} onChange={handleInputChangescholarship} required></input><br/>
+    Amount<input type='text' name='amount' value={scholarshipdata.amount} onChange={handleInputChangescholarship} required></input><br/>
     <button onClick={handleAddScholarship}>Submit</button>
     </div>}
 
@@ -407,9 +409,9 @@ const handleAddEvents = async() => {
             ))}
             <button onClick={()=>setaddproject(!addproject)}>Add Project</button>
             {addproject &&<div>
-                Title:<input type="text" name='title' value={projectdata.title} onChange={handleInputChangeproject} required></input>
-                Guide:<input type="text" name='guide' value={projectdata.guide} onChange={handleInputChangeproject} required></input>
-                Description:<input type="textbox" name='project_desc' value={projectdata.project_desc} onChange={handleInputChangeproject} required></input>
+                Title:<input type="text" name='title' value={projectdata.title} onChange={handleInputChangeproject} required></input><br/>
+                Guide:<input type="text" name='guide' value={projectdata.guide} onChange={handleInputChangeproject} required></input><br/>
+                Description:<input type="textbox" name='project_desc' value={projectdata.project_desc} onChange={handleInputChangeproject} required></input><br/>
                 <button onClick={handleAddProject}>Submit</button>
                 </div>}
 
@@ -426,8 +428,8 @@ const handleAddEvents = async() => {
             {!sports &&<h3>No sports details found</h3>}
             {addsport && (
   <div>
-    Event Name:<input type="text" name='event_name' value={sportdata.event_name} onChange={handleInputChangesport} required></input>
-    Award:<input type="text" name='award' value={sportdata.award} onChange={handleInputChangesport} required></input>
+    Event Name:<input type="text" name='event_name' value={sportdata.event_name} onChange={handleInputChangesport} required></input><br/>
+    Award:<input type="text" name='award' value={sportdata.award} onChange={handleInputChangesport} required></input><br/>
     <button onClick={handleAddSports}>Submit</button>
   </div>
 )}
@@ -466,10 +468,10 @@ const handleAddEvents = async() => {
 
             {addpaper && (
   <div>
-    Title:<input type="text" name='title' value={paperdata.title} onChange={handleInputChangepaper} required></input>
-    Journal:<input type="text" name='journal' value={paperdata.journal} onChange={handleInputChangepaper} required></input>
-    Date Year:<input type="date" name='date_year' value={paperdata.date_year} onChange={handleInputChangepaper} required></input>
-    DOI Link:<input type="text" name='DOI_link' value={paperdata.DOI_link} onChange={handleInputChangepaper} required></input>
+    Title:<input type="text" name='title' value={paperdata.title} onChange={handleInputChangepaper} required></input><br/>
+    Journal:<input type="text" name='journal' value={paperdata.journal} onChange={handleInputChangepaper} required></input><br/>
+    Date Year:<input type="date" name='date_year' value={paperdata.date_year} onChange={handleInputChangepaper} required></input><br/>
+    DOI Link:<input type="text" name='DOI_link' value={paperdata.DOI_link} onChange={handleInputChangepaper} required></input><br/>
     <button onClick={handleAddPapers}>Submit</button>
   </div>
 )}
@@ -491,11 +493,11 @@ const handleAddEvents = async() => {
             <button onClick={()=>setaddevent(!addevent)}>Add Events</button>
             {addevent && (
   <div>
-    Event Name:<input type="text" name='event_name' value={eventdata.event_name} onChange={handleInputChangeEvent} required></input>
-    Institution:<input type="text" name='institution' value={eventdata.institution} onChange={handleInputChangeEvent} required></input>
-    Date:<input type="date" name='date' value={eventdata.date} onChange={handleInputChangeEvent} required></input>
-    Role:<input type="text" name='role' value={eventdata.role} onChange={handleInputChangeEvent} required></input>
-    Awards:<input type="text" name='awards' value={eventdata.awards} onChange={handleInputChangeEvent} required></input>
+    Event Name:<input type="text" name='event_name' value={eventdata.event_name} onChange={handleInputChangeEvent} required></input><br/>
+    Institution:<input type="text" name='institution' value={eventdata.institution} onChange={handleInputChangeEvent} required></input><br/>
+    Date:<input type="date" name='date' value={eventdata.date} onChange={handleInputChangeEvent} required></input><br/>
+    Role:<input type="text" name='role' value={eventdata.role} onChange={handleInputChangeEvent} required></input><br/>
+    Awards:<input type="text" name='awards' value={eventdata.awards} onChange={handleInputChangeEvent} required></input><br/>
     <button onClick={handleAddEvents}>Submit</button>
   </div>
 )}

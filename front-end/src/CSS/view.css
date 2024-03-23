@@ -5,6 +5,8 @@
     max-width: 75%;
     margin: 0 auto;
     padding: 20px;
+    text-align: justify;
+
 }
 
 /* Heading styles */
@@ -26,10 +28,12 @@
     padding: 20px;
     background-color: #f9f9f9;
     font-size: larger;
+    text-align: justify;
 }
 
 .view-form p {
     margin: 0;
+    text-align: justify;
 }
 
 .view-form p strong {
