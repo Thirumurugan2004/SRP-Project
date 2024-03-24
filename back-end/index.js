@@ -570,7 +570,14 @@ app.put('/editbasicacademic/:rollNumber', (req, res) => {
       }
   });
 });
-
+app.get('/getgpa/:rollNumber', (req, res) => {
+  const rollNumber = req.params.rollNumber;
+  const query = `SELECT * FROM gpa WHERE rollnumber =?`;
+  db.query(query, [rollNumber], (error, results) => {
+    if (error) throw error;
+    res.json(results);
+  }); 
+})
 app.get('/logout', (req, res) => {
   const username = req.session.username;
     req.session.destroy((err) => {

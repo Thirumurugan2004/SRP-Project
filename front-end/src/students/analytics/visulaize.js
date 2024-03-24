@@ -8,7 +8,7 @@ function Visualization() {
     const [basicacademic, setbasicacademic] = useState(null);
     const [marks, setMarks] = useState(null);
     const [sem, setSem] = useState(null);
-
+    const [gpa, setGpa] = useState(null);
     useEffect(() => {
         axios.get('http://localhost:5000/session')
             .then(response => {
@@ -17,7 +17,21 @@ function Visualization() {
             .catch(error => {
                 console.log(error);
             });
-    }, []);
+            axios.get(`http://localhost:5000/getgpa/${userRef.current}`)
+            .then(response => {
+                if (response.data) {
+                    setGpa(response.data);
+                     renderGpaChart(response.data);
+                    console.log("gpa",response.data);
+                } else {
+                    setGpa(null);
+                    alert('No GPA found');
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }, [sem]);
 
     const handleInputChange = (event) => {
         const selectedSemester = event.target.value;
@@ -39,7 +53,7 @@ function Visualization() {
         axios.get(`http://localhost:5000/getsemestermarks/${userRef.current}/${selectedSemester}`)
             .then(response => {
                 if (response.data) {
-                    console.log(response.data);
+                    console.log("marks=",response.data);
                     setMarks(response.data);
                     renderChart(response.data);
                 } else {
@@ -50,26 +64,23 @@ function Visualization() {
             .catch(err => {
                 console.log(err);
             });
+           
     };
 
     const renderChart = (marksData) => {
         const ctx = document.getElementById('marksChart');
         const subjectIDs = marksData.map(mark => mark.SubjectID);
         const marksObtained = marksData.map(mark => mark.MarksObtained);
-
-        // Check if Chart.instances exists and if it's an object
         if (Chart.instances && typeof Chart.instances === 'object') {
-            // Iterate over the keys of Chart.instances
             Object.keys(Chart.instances).forEach(key => {
-                // Get the chart instance corresponding to the current key and destroy it
                 const instance = Chart.instances[key];
                 instance.destroy();
             });
         }
 
-        // Render the new chart instance
+
         new Chart(ctx, {
-            type: 'bar',
+            type: 'line',
             data: {
                 labels: subjectIDs,
                 datasets: [{
@@ -81,12 +92,41 @@ function Visualization() {
                 }]
             },
             options: {
-                indexAxis: 'x', // Show labels on the y-axis
-                maintainAspectRatio: false, // Disable aspect ratio to allow resizing
-                responsive: true, // Allow chart to be responsive
+                indexAxis: 'x', 
+                maintainAspectRatio: false,
+                responsive: true,
                 plugins: {
                     legend: {
-                        display: true // Hide the legend
+                        display: true
+                    }
+                }
+            }
+        });
+    };
+    const renderGpaChart = (gpaData) => {
+        
+        const ctx1 = document.getElementById('gpaChart');
+        const semesters = gpaData.map(gpa => gpa.semester);
+        const gpas = gpaData.map(gpa => gpa.gpa);
+        console.log("render",semesters);
+        new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: semesters,
+                datasets: [{
+                    label: 'GPA',
+                    data: gpas,
+                    borderColor: 'rgba(100, 245, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'x', 
+                maintainAspectRatio: false,
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true
                     }
                 }
             }
@@ -113,6 +153,9 @@ function Visualization() {
             </div>
             <div>
                 <canvas id="marksChart"></canvas>
+            </div>
+            <div>
+                <canvas id="gpaChart"></canvas>
             </div>
         </>
     )
