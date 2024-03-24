@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbarfun from '../../usercomponents/Navbarfun';
-import '../../CSS/view.css';
+import styles from '../../CSS/view.css';
 function ViewStudentPersonal() {
     const [studentDetails, setStudentDetails] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
@@ -55,7 +55,8 @@ function ViewStudentPersonal() {
                 {errorMessage && <p>{errorMessage}</p>}
                 {studentDetails && (
                     <div className='view-form'>
-                        <img src={`http://localhost:5000/getImage/${studentDetails.RollNumber}`} alt='img'/>
+                        <img className='prof-pic' src={`http://localhost:5000/getImage/${studentDetails.RollNumber}`} alt='img'/>
+                        <br/>
                         <p className='view-field'><strong>Roll Number:</strong> {studentDetails.RollNumber}</p>
                         <p className='view-field'><strong>Date of Birth:</strong> {studentDetails.DateOfBirth}</p>
                         <p className='view-field'><strong>Address:</strong> {studentDetails.Address}</p>

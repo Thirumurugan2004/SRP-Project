@@ -81,9 +81,12 @@ function Visualization() {
                 }]
             },
             options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
+                indexAxis: 'x', // Show labels on the y-axis
+                maintainAspectRatio: false, // Disable aspect ratio to allow resizing
+                responsive: true, // Allow chart to be responsive
+                plugins: {
+                    legend: {
+                        display: true // Hide the legend
                     }
                 }
             }

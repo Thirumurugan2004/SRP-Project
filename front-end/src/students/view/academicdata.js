@@ -1,13 +1,14 @@
 import React, { useState, useEffect,useRef } from 'react';
 import axios from 'axios';
 import Navbarfun from '../../usercomponents/Navbarfun';
-
+import styles from '../../CSS/view_academicdata.css'
 function ViewStudentAcademic(){
     const userRef = useRef(null);
     const cursemRef= useRef(null);
     const  [basicacademic,setbasicacademic]=useState(null);
     const [marks, setMarks] = useState(null);
     const  [sem,setsem]=useState(null);
+    const [gpa,setgpa]=useState(null);
     const handleInputChange = (event) => {
         setsem(event.target.value);
        
@@ -32,7 +33,6 @@ function ViewStudentAcademic(){
         axios.get(`http://localhost:5000/getsemestermarks/${userRef.current}/${sem}`)
         .then(response => {
             if(response.data){
-                console.log(response.data);
                 setMarks(response.data);
             }
             else{
@@ -42,7 +42,11 @@ function ViewStudentAcademic(){
         .catch(err => {
             console.log(err);
         })
-       
+       axios.get(`http://localhost:5000/getsemestergpa/${userRef.current}/${sem}`)
+       .then(response => {
+        console.log('sem gpa',response.data);
+        setgpa(response.data);
+       })
         })
         .catch(error => {
             console.log(error);
@@ -75,11 +79,10 @@ function ViewStudentAcademic(){
         </div>
         {marks &&  <div>
       <h2>Marks Table</h2>
-      <table>
+      <table className='marks-table'>
         <thead>
           <tr>
             <th>Subject ID</th>
-            <th>Semester</th>
             <th>Marks Obtained</th>
             <th>Grade</th>
           </tr>
@@ -88,13 +91,13 @@ function ViewStudentAcademic(){
           {marks.map((mark, index) => (
             <tr key={index}>
               <td>{mark.SubjectID}</td>
-              <td>{mark.Semester}</td>
               <td>{mark.MarksObtained}</td>
               <td>{mark.Grade}</td>
             </tr>
           ))}
         </tbody>
       </table>
+      {gpa && <p className='gpa-show'>Semester GPA:{gpa.gpa}</p>}
     </div>}
         </>
     )

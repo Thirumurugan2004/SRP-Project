@@ -512,6 +512,16 @@ app.get('/getsemestermarks/:rollNumber/:sem', (req, res) => {
   });
 });
 
+app.get('/getsemestergpa/:rollNumber/:sem', (req, res) => {
+  const semester = req.params.sem;
+  const rollNumber = req.params.rollNumber;
+  console.log(semester, rollNumber);
+  const query = `SELECT * FROM gpa WHERE semester =? AND rollnumber =?`;
+  db.query(query, [semester, rollNumber], (error, results) => {
+    if (error) throw error;
+    res.json(results[0]);
+  });
+})
 app.get('/logout', (req, res) => {
   const username = req.session.username;
     req.session.destroy((err) => {

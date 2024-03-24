@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbarfun from '../../usercomponents/Navbarfun';
-import '../../CSS/view.css';
+import styles from '../../CSS/viewotherdata.css'
 function ViewStudentOther(){
     const [Username,setUsername]=useState(null);
     const [internships,setInternships]=useState(null);
@@ -141,7 +141,7 @@ function ViewStudentOther(){
         
     </div>
 ))}
-        {!Scholarships&&<h3>No Scholarshp details found</h3>}
+        {!Scholarships&&<h3 className='nodatamsg'>No Scholarshp details found</h3>}
 {Scholarships && Scholarships.map((Scholarship, index) => (
     <div className='view-form' key={index}>
         <h2>Scholarship Details {index + 1}</h2>
@@ -160,7 +160,7 @@ function ViewStudentOther(){
    
     </div>
 ))}
-            {!projects && <h3>No Project details found</h3>}
+            {!projects && <h3 className='nodatamsg'>No Project details found</h3>}
 
             {sports && sports.map((sport, index) => (
     <div className='view-form' key={index}>
@@ -169,7 +169,7 @@ function ViewStudentOther(){
         <p className='view-field'><strong>Award:</strong> {sport.award}</p>
     </div>
 ))}
-            {!sports &&<h3>No sports details found</h3>}
+            {!sports &&<h3 className='nodatamsg'>No sports details found</h3>}
             {exams && (
     <div className='view-form'>
         <h2>Exams Attended</h2>
@@ -181,7 +181,7 @@ function ViewStudentOther(){
         <p className='view-field'><strong>NET Score:</strong> {exams.NET_score}</p>
     </div>
 )}
-            {!exams &&<h3>No exam details found</h3>}
+            {!exams &&<h3 className='nodatamsg'>No exam details found</h3>}
 
              
        {papers && papers.map((paper, index) => (
@@ -194,7 +194,7 @@ function ViewStudentOther(){
       
         </div>
     ))}
-            {!papers &&<h3>No paper details found</h3>}
+            {!papers &&<h3 className='nodatamsg'>No paper details found</h3>}
             {events && events.map((event, index) => (
     <div className='view-form' key={index}>
         <h2>Events Details {index + 1}</h2>
@@ -206,7 +206,7 @@ function ViewStudentOther(){
   
     </div>
 ))}
-                {!events &&<h3>No events details found</h3>}
+                {!events &&<h3 className='nodatamsg'>No events details found</h3>}
         </>
     )
 }

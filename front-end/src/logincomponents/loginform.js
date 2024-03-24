@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react';
 import { Container, Card, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios'; // Import Axios library
-
+import  '../CSS/loginform.css'
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');

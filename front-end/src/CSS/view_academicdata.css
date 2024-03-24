@@ -1,0 +1,64 @@
+
+  
+  /* Page Container Styles */
+  .container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 20px;
+  }
+  
+  /* Basic Detail Styles */
+  .basic-detail {
+    margin-bottom: 20px;
+  }
+  
+  /* Select Styles */
+  #semSelect {
+    padding: 8px;
+    border-radius: 5px;
+  }
+  
+  /* Marks Table Styles */
+  .marks-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .marks-table th, .marks-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .marks-table th {
+    background-color: #f2f2f2;
+  }
+  
+  /* Semester GPA Styles */
+  .gpa-show {
+    font-weight: bold;
+    margin-top: 20px;
+  }
+  
+  /* Hover Effect for Table Rows */
+  .marks-table tbody tr:hover {
+    background-color: #f5f5f5;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Animation for Table Rows */
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .marks-table tbody tr {
+    animation: fadeIn 0.5s ease;
+  }
+  
