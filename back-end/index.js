@@ -514,9 +514,7 @@ app.get('/getsemestermarks/:rollNumber/:sem', (req, res) => {
 app.put('/editmarks/:rollNumber/:subjectID', (req, res) => {
   const rollNumber = req.params.rollNumber;
   const subjectID = req.params.subjectID;
-  const newMarks = req.body.marks; // Assuming marks are passed in the request body
-
-  // Calculate the new grade based on the new marks
+  const newMarks = req.body.marks;
   let newGrade;
   if (newMarks >= 90) {
     newGrade = 'O';
@@ -531,8 +529,6 @@ app.put('/editmarks/:rollNumber/:subjectID', (req, res) => {
   } else {
     newGrade = 'C';
   }
-
-  // Update both MarksObtained and Grade in the database
   const query = `UPDATE marks SET MarksObtained = ?, Grade = ? WHERE RollNumber = ? AND SubjectID = ?`;
   db.query(query, [newMarks, newGrade, rollNumber, subjectID], (error, results) => {
     if (error) {

@@ -47,7 +47,6 @@ function EditStudentAcademic() {
     }, [sem]);
 
     const handleEditMarks = (subjectID, newMarks) => {
-        // Make API call to edit marks for the subject
         if (newMarks < 0 || newMarks > 100) {
             alert('Marks should be between 0 and 100');
             return;
@@ -55,7 +54,6 @@ function EditStudentAcademic() {
         axios.put(`http://localhost:5000/editmarks/${userRef.current}/${subjectID}`, { marks: newMarks })
             .then(response => {
                 console.log('Marks edited successfully');
-                // After editing marks, fetch updated marks data for the current semester
                 axios.get(`http://localhost:5000/getsemestermarks/${userRef.current}/${sem}`)
                     .then(response => {
                         if (response.data) {
