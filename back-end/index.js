@@ -552,6 +552,25 @@ app.get('/getsemestergpa/:rollNumber/:sem', (req, res) => {
     res.json(results[0]);
   });
 })
+app.put('/editbasicacademic/:rollNumber', (req, res) => {
+  const rollNumber = req.params.rollNumber;
+  const { CurrentSemester, TenthMarks, HigherSecondaryMarks } = req.body;
+
+  const query = `UPDATE student_academic_details 
+                 SET CurrentSemester = ?, TenthMarks = ?, HigherSecondaryMarks = ? 
+                 WHERE RollNumber = ?`;
+  
+  db.query(query, [CurrentSemester, TenthMarks, HigherSecondaryMarks, rollNumber], (error, results) => {
+      if (error) {
+          console.error("Error updating basic academic details:", error);
+          res.status(500).json({ error: "An error occurred while updating basic academic details" });
+      } else {
+          console.log("Basic academic details updated successfully");
+          res.status(200).json({ message: "Basic academic details updated successfully" });
+      }
+  });
+});
+
 app.get('/logout', (req, res) => {
   const username = req.session.username;
     req.session.destroy((err) => {

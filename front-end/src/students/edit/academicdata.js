@@ -7,9 +7,18 @@ function EditStudentAcademic() {
     const [basicacademic, setBasicAcademic] = useState(null);
     const [marks, setMarks] = useState(null);
     const [sem, setSem] = useState(null);
+    const [tenthMarks, setTenthMarks] = useState('');
+    const [higherSecondaryMarks, setHigherSecondaryMarks] = useState('');
 
     const handleInputChange = (event) => {
-        setSem(event.target.value);
+        const { name, value } = event.target;
+        if (name === 'sem') {
+            setSem(value);
+        } else if (name === 'tenthMarks') {
+            setTenthMarks(value);
+        } else if (name === 'higherSecondaryMarks') {
+            setHigherSecondaryMarks(value);
+        }
     };
 
     useEffect(() => {
@@ -21,6 +30,8 @@ function EditStudentAcademic() {
                     .then(response => {
                         if (response.data) {
                             setBasicAcademic(response.data);
+                            setTenthMarks(response.data.TenthMarks);
+                            setHigherSecondaryMarks(response.data.HigherSecondaryMarks);
                         } else {
                             alert('No academic data found');
                         }
@@ -71,19 +82,54 @@ function EditStudentAcademic() {
             });
     };
 
+    const handleEditBasicAcademic = () => {
+        // Make API call to edit basic academic details
+        axios.put(`http://localhost:5000/editbasicacademic/${userRef.current}`, {
+            TenthMarks: tenthMarks,
+            HigherSecondaryMarks: higherSecondaryMarks
+        })
+        .then(response => {
+            console.log('Basic academic details edited successfully');
+            setBasicAcademic({
+                ...basicacademic,
+                TenthMarks: tenthMarks,
+                HigherSecondaryMarks: higherSecondaryMarks
+            });
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    };
+
     return (
         <>
             <Navbarfun />
             <h1>Edit Student Academic</h1>
             {basicacademic && <div className='basic-detail'>
                 <p>Current Semester : {basicacademic.CurrentSemester}</p>
-                <p>Tenth Marks : {basicacademic.TenthMarks}</p>
-                <p>Higher Secondary Marks : {basicacademic.HigherSecondaryMarks}</p>
+                <p>Tenth Marks : 
+                    <input
+                        type="number"
+                        name="tenthMarks"
+                        value={tenthMarks}
+                        onChange={handleInputChange}
+                    />
+                </p>
+                <p>Higher Secondary Marks : 
+                    <input
+                        type="number"
+                        name="higherSecondaryMarks"
+                        value={higherSecondaryMarks}
+                        onChange={handleInputChange}
+                    />
+                </p>
+                <button className="add-btn" onClick={handleEditBasicAcademic}>Save Basic Academic Details</button>
             </div>}
             <div>
                 <label htmlFor="semSelect">Select Semester:</label>
                 <select
                     id="semSelect"
+                    name="sem"
                     value={sem || ''}
                     onChange={handleInputChange}
                 >
