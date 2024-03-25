@@ -15,6 +15,8 @@ import Visualization from './students/analytics/visulaize';
 import EditStudentAcademic from './students/edit/academicdata';
 import Staffviewpersonal from './teacher/view/staffviewpersonal';
 import Staffviewacademic from './teacher/view/staffviewacademic';
+import Staffviewother from './teacher/view/staffviewother';
+import Teacheranalytics from './teacher/analytics/teacheranalytics';
 function App() {
   return (
     <BrowserRouter>
@@ -34,6 +36,8 @@ function App() {
         <Route path="/student/edit/academicdata" element={<EditStudentAcademic />} />
         <Route path="/teacher/view/personaldata" element={<Staffviewpersonal />} />
         <Route path="/teacher/view/academicdata" element={<Staffviewacademic />} />
+        <Route path="/teacher/view/otherdata" element={<Staffviewother />} />
+        <Route path="/teacher/analytics" element={<Teacheranalytics/>} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>
