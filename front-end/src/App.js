@@ -13,6 +13,8 @@ import EditStudentOther from './students/edit/otherdata';
 import Changepassword from './logincomponents/Changepassword';
 import Visualization from './students/analytics/visulaize';
 import EditStudentAcademic from './students/edit/academicdata';
+import Staffviewpersonal from './teacher/view/staffviewpersonal';
+import Staffviewacademic from './teacher/view/staffviewacademic';
 function App() {
   return (
     <BrowserRouter>
@@ -30,6 +32,8 @@ function App() {
         <Route path="/changepassword" element={<Changepassword/>}/>
         <Route path="/student/analytics" element={<Visualization />} />
         <Route path="/student/edit/academicdata" element={<EditStudentAcademic />} />
+        <Route path="/teacher/view/personaldata" element={<Staffviewpersonal />} />
+        <Route path="/teacher/view/academicdata" element={<Staffviewacademic />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>

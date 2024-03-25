@@ -8,7 +8,7 @@ function Student() {
         const fetchData = async () => {
             try {
                 const response = await axios.get('http://localhost:5000/session', {
-                    withCredentials: true // Ensure cookies are sent with the request
+                    withCredentials: true 
                 });
                 const data = response.data;
                 console.log(data);
@@ -35,6 +35,7 @@ function Student() {
        <Navbarfun/>
             <h1>Student</h1>
             <p>Welcome, {username}</p>
+
         </>
     );
 }
