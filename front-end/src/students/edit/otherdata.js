@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Navbarfun from '../../usercomponents/Navbarfun';
-import '../../CSS/view.css'
+import styles from '../../CSS/edit_otherdata.css'
 function EditStudentOther() {
     const [internships, setInternships] = useState(null);
     const [scholarships, setScholarships] = useState(null);
@@ -349,8 +349,9 @@ const handleAddEvents = async() => {
     return (
         <>
             <Navbarfun />
-            <h2>EditStudentOther</h2>
+           
             {internships && internships.map((internship, index) => (
+                <div>
     <div className='view-form' key={index}>
         <h2>Internship Details {index + 1}</h2>
         <p className='view-field'><strong>Roll Number:</strong> {internship.roll_number}</p>
@@ -362,10 +363,12 @@ const handleAddEvents = async() => {
         
         <p className='view-field'><strong>Internship EndDate:</strong> {internship.InternshipEndDate}</p>
         <p className='view-field'><strong>Product/Service Based :</strong> {internship.product_service_based}</p>
-        <button onClick={() => handleDeleteInternship(index)}>Delete</button>
+       
+    </div>
+    <button className="delete-btn" onClick={() => handleDeleteInternship(index)}>Delete</button>
     </div>
 ))}
-            <button onClick={()=>setaddinternship(!addinternship)}>Add Internship</button>
+            <button className="add-btn" onClick={()=>setaddinternship(!addinternship)}>Add Internship</button>
             {addinternship && (
   <div>
     Employer Name:<input type="text" name='employer_name' value={internshipdata.employer_name} onChange={handleInputChangeInternship} required></input><br/>
@@ -375,62 +378,71 @@ const handleAddEvents = async() => {
     Start Date:<input type="date" name='InternshipStartDate' value={internshipdata.InternshipStartDate} onChange={handleInputChangeInternship} required></input><br/>
     End Date:<input type="date" name='InternshipEndDate' value={internshipdata.InternshipEndDate} onChange={handleInputChangeInternship} required></input><br/>
     Product/Service Based:<input type="text" name='product_service_based' value={internshipdata.product_service_based} onChange={handleInputChangeInternship} required></input><br/>
-    <button onClick={handleAddInternship}>Submit</button>
+    <button className="add-btn" onClick={handleAddInternship}>Submit</button>
   </div>
 )}
 
 
             {!scholarships&&<h3>No Scholarshp details found</h3>}
 {scholarships && scholarships.map((Scholarship, index) => (
+    <div>
     <div className='view-form' key={index}>
         <h2>Scholarship Details {index + 1}</h2>
         <p className='view-field'><strong>Scholarship Provider:</strong> {Scholarship.ScholarshipProvider}</p>
         <p className='view-field'><strong>Amount:</strong> {Scholarship.amount}</p>
-        <button onClick={() => handleDeleteScholarship(Scholarship.id)}>Delete</button>
+        
+    </div>
+    <button className="delete-btn"  onClick={() => handleDeleteScholarship(Scholarship.id)}>Delete</button>
     </div>
 ))}
-            <button onClick={()=>setaddScholarship(!addScholarship)}>Add Scholarship</button>
+            <button className="add-btn" onClick={()=>setaddScholarship(!addScholarship)}>Add Scholarship</button>
 
 {addScholarship && <div>
     Scholarship Provider<input type='text' name='ScholarshipProvider' value={scholarshipdata.ScholarshipProvider} onChange={handleInputChangescholarship} required></input><br/>
     Amount<input type='text' name='amount' value={scholarshipdata.amount} onChange={handleInputChangescholarship} required></input><br/>
-    <button onClick={handleAddScholarship}>Submit</button>
+    <button className="add-btn" onClick={handleAddScholarship}>Submit</button>
     </div>}
 
 
             {projects && projects.map((Project, index) => (
+                <div>
                 <div className='view-form' key={index}>
                     <h2>Project Details {index + 1}</h2>
                     <p className='view-field'><strong>Project Name:</strong> {Project.title}</p>
                     <p className='view-field'><strong>Guide:</strong> {Project.guide}</p>
                     <p className='view-field'><strong>Description:</strong> {Project.project_desc}</p>
-                    <button onClick={() => handleDeleteProject(Project.id)}>Delete</button>
+                    
+                </div>
+                <button className="delete-btn" onClick={() => handleDeleteProject(Project.id)}>Delete</button>
                 </div>
             ))}
-            <button onClick={()=>setaddproject(!addproject)}>Add Project</button>
+            <button className='add-btn' onClick={()=>setaddproject(!addproject)}>Add Project</button>
             {addproject &&<div>
                 Title:<input type="text" name='title' value={projectdata.title} onChange={handleInputChangeproject} required></input><br/>
                 Guide:<input type="text" name='guide' value={projectdata.guide} onChange={handleInputChangeproject} required></input><br/>
                 Description:<input type="textbox" name='project_desc' value={projectdata.project_desc} onChange={handleInputChangeproject} required></input><br/>
-                <button onClick={handleAddProject}>Submit</button>
+                <button className="add-btn" onClick={handleAddProject}>Submit</button>
                 </div>}
 
 
             {sports && sports.map((sport, index) => (
+                <div>
     <div className='view-form' key={index}>
         <h2>Sports Details {index + 1}</h2>
         <p className='view-field'><strong>Event Name:</strong> {sport.event_name}</p>
         <p className='view-field'><strong>Award:</strong> {sport.award}</p>
-        <button onClick={() => handleDeleteSports(sport.id)}>Delete</button>
+        
+    </div>
+    <button className="delete-btn" onClick={() => handleDeleteSports(sport.id)}>Delete</button>
     </div>
 ))}
-            <button onClick={()=>setaddsport(!addsport)}>Add Sports</button>
+            <button className="add-btn" onClick={()=>setaddsport(!addsport)}>Add Sports</button>
             {!sports &&<h3>No sports details found</h3>}
             {addsport && (
   <div>
     Event Name:<input type="text" name='event_name' value={sportdata.event_name} onChange={handleInputChangesport} required></input><br/>
     Award:<input type="text" name='award' value={sportdata.award} onChange={handleInputChangesport} required></input><br/>
-    <button onClick={handleAddSports}>Submit</button>
+    <button className="add-btn" onClick={handleAddSports}>Submit</button>
   </div>
 )}
 
@@ -453,17 +465,18 @@ const handleAddEvents = async() => {
 
              
        {papers && papers.map((paper, index) => (
+        <div>
         <div className='view-form' key={index}>
             <h2>Papers Presented {index + 1}</h2>
             <p className='view-field'><strong>Title:</strong> {paper.title}</p>
             <p className='view-field'><strong>Journal:</strong> {paper.journal}</p>
             <p className='view-field'><strong>Date:</strong> {paper.date_year}</p>
             <p className='view-field'><strong>DOI link:</strong> {paper.DOI_link}</p>
-            <button onClick={() => handleDeletePapers(paper.id)}>Delete</button>
-      
+        </div>
+        <button className="delete-btn" onClick={() => handleDeletePapers(paper.id)}>Delete</button>
         </div>
     ))}
-    <button onClick={()=>setaddpaper(!addpaper)}>Add Papers</button>
+    <button className="add-btn" onClick={()=>setaddpaper(!addpaper)}>Add Papers</button>
             {!papers &&<h3>No paper details found</h3>}
 
             {addpaper && (
@@ -472,13 +485,14 @@ const handleAddEvents = async() => {
     Journal:<input type="text" name='journal' value={paperdata.journal} onChange={handleInputChangepaper} required></input><br/>
     Date Year:<input type="date" name='date_year' value={paperdata.date_year} onChange={handleInputChangepaper} required></input><br/>
     DOI Link:<input type="text" name='DOI_link' value={paperdata.DOI_link} onChange={handleInputChangepaper} required></input><br/>
-    <button onClick={handleAddPapers}>Submit</button>
+    <button className="add-btn" onClick={handleAddPapers}>Submit</button>
   </div>
 )}
 
 
 
             {events && events.map((event, index) => (
+                <div>
     <div className='view-form' key={index}>
         <h2>Events Details {index + 1}</h2>
         <p className='view-field'><strong>Event Name:</strong> {event.event_name}</p>
@@ -486,11 +500,11 @@ const handleAddEvents = async() => {
         <p className='view-field'><strong>Role:</strong> {event.role}</p>
         <p className='view-field'><strong>Date:</strong> {event.date}</p>
         <p className='view-field'><strong>Awards:</strong> {event.awards}</p>
-        <button onClick={() => handleDeleteEvents(event.id)}>Delete</button>
-  
+    </div>
+    <button className="delete-btn" onClick={() => handleDeleteEvents(event.id)}>Delete</button>
     </div>
 ))}
-            <button onClick={()=>setaddevent(!addevent)}>Add Events</button>
+            <button className="add-btn" onClick={()=>setaddevent(!addevent)}>Add Events</button>
             {addevent && (
   <div>
     Event Name:<input type="text" name='event_name' value={eventdata.event_name} onChange={handleInputChangeEvent} required></input><br/>
@@ -498,7 +512,7 @@ const handleAddEvents = async() => {
     Date:<input type="date" name='date' value={eventdata.date} onChange={handleInputChangeEvent} required></input><br/>
     Role:<input type="text" name='role' value={eventdata.role} onChange={handleInputChangeEvent} required></input><br/>
     Awards:<input type="text" name='awards' value={eventdata.awards} onChange={handleInputChangeEvent} required></input><br/>
-    <button onClick={handleAddEvents}>Submit</button>
+    <button className="add-btn" onClick={handleAddEvents}>Submit</button>
   </div>
 )}
 

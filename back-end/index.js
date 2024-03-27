@@ -511,7 +511,73 @@ app.get('/getsemestermarks/:rollNumber/:sem', (req, res) => {
     res.json(results);
   });
 });
+app.put('/editmarks/:rollNumber/:subjectID', (req, res) => {
+  const rollNumber = req.params.rollNumber;
+  const subjectID = req.params.subjectID;
+  const newMarks = req.body.marks;
+  let newGrade;
+  if (newMarks >= 90) {
+    newGrade = 'O';
+  } else if (newMarks >= 80) {
+    newGrade = 'A+';
+  } else if (newMarks >= 70) {
+    newGrade = 'A';
+  } else if (newMarks >= 60) {
+    newGrade = 'B+';
+  } else if (newMarks >= 50) {
+    newGrade = 'B';
+  } else {
+    newGrade = 'C';
+  }
+  const query = `UPDATE marks SET MarksObtained = ?, Grade = ? WHERE RollNumber = ? AND SubjectID = ?`;
+  db.query(query, [newMarks, newGrade, rollNumber, subjectID], (error, results) => {
+    if (error) {
+      console.error("Error updating marks:", error);
+      res.status(500).json({ error: "An error occurred while updating marks" });
+    } else {
+      console.log("Marks and grade updated successfully");
+      res.status(200).json({ message: "Marks and grade updated successfully" });
+    }
+  });
+});
 
+
+app.get('/getsemestergpa/:rollNumber/:sem', (req, res) => {
+  const semester = req.params.sem;
+  const rollNumber = req.params.rollNumber;
+  console.log(semester, rollNumber);
+  const query = `SELECT * FROM gpa WHERE semester =? AND rollnumber =?`;
+  db.query(query, [semester, rollNumber], (error, results) => {
+    if (error) throw error;
+    res.json(results[0]);
+  });
+})
+app.put('/editbasicacademic/:rollNumber', (req, res) => {
+  const rollNumber = req.params.rollNumber;
+  const { CurrentSemester, TenthMarks, HigherSecondaryMarks } = req.body;
+
+  const query = `UPDATE student_academic_details 
+                 SET CurrentSemester = ?, TenthMarks = ?, HigherSecondaryMarks = ? 
+                 WHERE RollNumber = ?`;
+  
+  db.query(query, [CurrentSemester, TenthMarks, HigherSecondaryMarks, rollNumber], (error, results) => {
+      if (error) {
+          console.error("Error updating basic academic details:", error);
+          res.status(500).json({ error: "An error occurred while updating basic academic details" });
+      } else {
+          console.log("Basic academic details updated successfully");
+          res.status(200).json({ message: "Basic academic details updated successfully" });
+      }
+  });
+});
+app.get('/getgpa/:rollNumber', (req, res) => {
+  const rollNumber = req.params.rollNumber;
+  const query = `SELECT * FROM gpa WHERE rollnumber =?`;
+  db.query(query, [rollNumber], (error, results) => {
+    if (error) throw error;
+    res.json(results);
+  }); 
+})
 app.get('/logout', (req, res) => {
   const username = req.session.username;
     req.session.destroy((err) => {

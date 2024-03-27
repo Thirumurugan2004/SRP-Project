@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbarfun from '../../usercomponents/Navbarfun';
 import styles from '../../CSS/viewotherdata.css'
-function ViewStudentOther(){
+function Staffviewother(){
     const [Username,setUsername]=useState(null);
+    const [rollNumber, setRollNumber] = useState('');
     const [internships,setInternships]=useState(null);
     const [Scholarships,setScholarships]=useState(null);
     const [projects,setProjects]=useState(null);
@@ -13,12 +14,12 @@ function ViewStudentOther(){
     const [events,setEvents]=useState(null);
     const [errorMessage, setErrorMessage] = useState('');
     axios.defaults.withCredentials = true; 
-    useEffect(() => {
-        axios.get('http://localhost:5000/session')
-            .then(response => {
-                const username = response.data.username;
-                
-                axios.get(`http://localhost:5000/InternshipDetails/${username}`)
+    const handleInputChange = (event) => {
+        setRollNumber(event.target.value);
+    };
+    const fetchStudentDetails = (event) => {
+        const username = rollNumber;
+        axios.get(`http://localhost:5000/InternshipDetails/${username}`)
                     .then(response => {
                         if (response.data) {
                             console.log(response.data);
@@ -118,6 +119,13 @@ function ViewStudentOther(){
                     .catch(error => {
                         console.error('Error fetching Events details:', error);
                     });
+    }
+    useEffect(() => {
+        axios.get('http://localhost:5000/session')
+            .then(response => {
+                if(rollNumber){
+                fetchStudentDetails();}
+                
             })
             .catch(error => {
                 console.error('Error fetching username:', error);
@@ -126,7 +134,13 @@ function ViewStudentOther(){
     return(
         <>
         <Navbarfun/>
-       
+        <input
+                type="number"
+                placeholder="Enter Roll Number"
+                value={rollNumber}
+                onChange={handleInputChange}
+            />
+            <button onClick={fetchStudentDetails}>Search</button>
         {internships && internships.map((internship, index) => (
     <div className='view-form' key={index}>
         <h2>Internship Details {index + 1}</h2>
@@ -210,4 +224,4 @@ function ViewStudentOther(){
         </>
     )
 }
-export default ViewStudentOther;
+export default Staffviewother;

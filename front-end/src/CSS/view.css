@@ -43,13 +43,22 @@
 .view-field{
     padding-top:10px;
 }
-.view-form img {
+ img {
     max-width: 150px; /* Adjust width as needed */
-    float: right;
+    
 }
+.img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
 @media (max-width: 900px) {
 
     .view-form{
      
     }
+}
+.prof-pic{
+    justify-content: center;
 }

@@ -2,23 +2,23 @@ import React, { useState, useEffect,useRef } from 'react';
 import axios from 'axios';
 import Navbarfun from '../../usercomponents/Navbarfun';
 import styles from '../../CSS/view_academicdata.css'
-function ViewStudentAcademic(){
+function Staffviewacademic(){
     const userRef = useRef(null);
+    const [rollNumber, setRollNumber] = useState('');
     const cursemRef= useRef(null);
     const  [basicacademic,setbasicacademic]=useState(null);
     const [marks, setMarks] = useState(null);
     const  [sem,setsem]=useState(null);
     const [gpa,setgpa]=useState(null);
-    const handleInputChange = (event) => {
+    const handleInputChangesem = (event) => {
         setsem(event.target.value);
        
     };
-    useEffect(() => {
-        axios.get('http://localhost:5000/session')
-        .then(response => {
-            userRef.current = response.data.username;
-
-        axios.get(`http://localhost:5000/basicacademic/${userRef.current}`)
+    const handleInputChange = (event) => {
+        setRollNumber(event.target.value);
+    };
+    const fetchdata = () => {
+        axios.get(`http://localhost:5000/basicacademic/${rollNumber}`)
         .then(response => {
             if (response.data) {
                 setbasicacademic(response.data);
@@ -30,7 +30,7 @@ function ViewStudentAcademic(){
         .catch(error => {
             console.log(error);
         })
-        axios.get(`http://localhost:5000/getsemestermarks/${userRef.current}/${sem}`)
+        axios.get(`http://localhost:5000/getsemestermarks/${rollNumber}/${sem}`)
         .then(response => {
             if(response.data){
                 setMarks(response.data);
@@ -42,11 +42,21 @@ function ViewStudentAcademic(){
         .catch(err => {
             console.log(err);
         })
-       axios.get(`http://localhost:5000/getsemestergpa/${userRef.current}/${sem}`)
+       axios.get(`http://localhost:5000/getsemestergpa/${rollNumber}/${sem}`)
        .then(response => {
-        console.log('sem gpa',response.data);
+    
         setgpa(response.data);
        })
+        
+    }
+    useEffect(() => {
+        axios.get('http://localhost:5000/session')
+        .then(response => {
+            userRef.current = rollNumber;
+            if(rollNumber){
+            fetchdata();
+        }
+
         })
         .catch(error => {
             console.log(error);
@@ -58,6 +68,13 @@ function ViewStudentAcademic(){
         <>
         <Navbarfun/>
         <h1>ViewStudentAcademic</h1>
+        <input
+                type="number"
+                placeholder="Enter Roll Number"
+                value={rollNumber}
+                onChange={handleInputChange}
+            />
+            <button onClick={fetchdata}>Search</button>
         {basicacademic &&<div className='basic-detail'>
             <p>Current Semester : {basicacademic.CurrentSemester}</p>
             <p>Tenth Marks : {basicacademic.TenthMarks}</p>
@@ -68,7 +85,7 @@ function ViewStudentAcademic(){
             <select
                 id="semSelect"
                 value={sem || ''}
-                onChange={handleInputChange}
+                onChange={handleInputChangesem}
             >
                 <option value="">Select Semester</option>
                 {[...Array(8).keys()].map((num) => (
@@ -102,4 +119,4 @@ function ViewStudentAcademic(){
         </>
     )
 }
-export default ViewStudentAcademic;
+export default Staffviewacademic;

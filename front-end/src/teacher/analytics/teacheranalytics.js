@@ -3,12 +3,16 @@ import Navbarfun from "../../usercomponents/Navbarfun";
 import axios from "axios";
 import Chart from 'chart.js/auto';
 
-function Visualization() {
+function Teacheranalytics() {
     const userRef = useRef(null);
+    const [rollNumber, setRollNumber] = useState('');
     const [basicacademic, setbasicacademic] = useState(null);
     const [marks, setMarks] = useState(null);
     const [sem, setSem] = useState(null);
     const [gpa, setGpa] = useState(null);
+    const handleInputChange1 = (event) => {
+        setRollNumber(event.target.value);
+    };
     useEffect(() => {
         axios.get('http://localhost:5000/session')
             .then(response => {
@@ -17,7 +21,7 @@ function Visualization() {
             .catch(error => {
                 console.log(error);
             });
-            axios.get(`http://localhost:5000/getgpa/${userRef.current}`)
+            axios.get(`http://localhost:5000/getgpa/${rollNumber}`)
             .then(response => {
                 if (response.data) {
                     setGpa(response.data);
@@ -32,12 +36,14 @@ function Visualization() {
                 console.log(err);
             });
     }, [sem]);
+    const fetchStudentDetails=(event) => {
 
+    }
     const handleInputChange = (event) => {
         const selectedSemester = event.target.value;
         setSem(selectedSemester);
 
-        axios.get(`http://localhost:5000/basicacademic/${userRef.current}`)
+        axios.get(`http://localhost:5000/basicacademic/${rollNumber}`)
             .then(response => {
                 if (response.data) {
                     setbasicacademic(response.data);
@@ -50,7 +56,7 @@ function Visualization() {
                 console.log(error);
             });
 
-        axios.get(`http://localhost:5000/getsemestermarks/${userRef.current}/${selectedSemester}`)
+        axios.get(`http://localhost:5000/getsemestermarks/${rollNumber}/${selectedSemester}`)
             .then(response => {
                 if (response.data) {
                     console.log("marks=",response.data);
@@ -137,6 +143,14 @@ function Visualization() {
         <>
             <Navbarfun />
             <h1>Visualization</h1>
+            
+        <input
+                type="number"
+                placeholder="Enter Roll Number"
+                value={rollNumber}
+                onChange={handleInputChange1}
+            />
+            <button onClick={fetchStudentDetails}>Search</button>
             <div>
                 <label htmlFor="semSelect">Select Semester:</label>
                 <select
@@ -161,4 +175,4 @@ function Visualization() {
     )
 }
 
-export default Visualization;
+export default Teacheranalytics;
