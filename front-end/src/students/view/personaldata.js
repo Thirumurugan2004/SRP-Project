@@ -54,9 +54,14 @@ function ViewStudentPersonal() {
                 <h2 className='view-heading'>Student Personal Details</h2>
                 {errorMessage && <p>{errorMessage}</p>}
                 {studentDetails && (
+                    <>
+                    <div className='img-container'>
+                    <img className='prof-pic' src={`http://localhost:5000/getImage/${studentDetails.RollNumber}`} alt='img'/>
+                    </div>
+                   
                     <div className='view-form'>
-                        <img className='prof-pic' src={`http://localhost:5000/getImage/${studentDetails.RollNumber}`} alt='img'/>
-                        <br/>
+                        
+                        
                         <p className='view-field'><strong>Roll Number:</strong> {studentDetails.RollNumber}</p>
                         <p className='view-field'><strong>Date of Birth:</strong> {studentDetails.DateOfBirth}</p>
                         <p className='view-field'><strong>Address:</strong> {studentDetails.Address}</p>
@@ -69,6 +74,7 @@ function ViewStudentPersonal() {
                         <p className='view-field'><strong>Father's Occupation:</strong> {studentDetails.Fatheroccupation}</p>
                         <p className='view-field'><strong>Mother's Occupation:</strong> {studentDetails.Motheroccupation}</p>
                     </div>
+                    </>
                 )}
             </div>
         </>

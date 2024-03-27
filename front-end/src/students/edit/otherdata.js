@@ -349,7 +349,7 @@ const handleAddEvents = async() => {
     return (
         <>
             <Navbarfun />
-            <h2>EditStudentOther</h2>
+           
             {internships && internships.map((internship, index) => (
                 <div>
     <div className='view-form' key={index}>

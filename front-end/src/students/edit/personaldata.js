@@ -113,7 +113,7 @@ axios.post(`http://localhost:5000/upload/${studentData.RollNumber}`,formdata)
         <>
             <Navbarfun />
             <div classname='edit-container'>
-                <h1 className='edit-heading'>Edit Student Personal Data</h1>
+          
                 <form className='edit-form' onSubmit={handleSubmit}>
                     
                         <label className='edit-label'>Date of Birth:</label>

@@ -104,7 +104,7 @@ function EditStudentAcademic() {
     return (
         <>
             <Navbarfun />
-            <h1>Edit Student Academic</h1>
+   
             {basicacademic && <div className='basic-detail'>
                 <p>Current Semester : {basicacademic.CurrentSemester}</p>
                 <p>Tenth Marks : 
